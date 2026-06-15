@@ -8,6 +8,13 @@ The mod supports two types of messages:
 * **Default Messages** — Always available and can be sent at any time.
 * **Event Messages** — Unlocked by specific in-game events and can only be sent after the corresponding event has been detected.
 
+## How to Setup
+- Click on `Releases`
+- Download a release (ZIP)
+- Unzip it somewhere you can remember
+- Launch the application by clicking on the `KeyboardWarriorLoL.exe` file in the unzipped folder
+  - If it is blocked by windows defender, you will have to allow it to run
+
 ## Features
 
 * Configure hotkeys for commonly used chat messages.
@@ -120,11 +127,12 @@ Default Hotkey 1
 
 ## Usage
 
-1. Launch League of Legends alongside KeyboardWarriorLoL.
+1. Launch League of Legends alongside KeyboardWarriorLoL (KeyboardWarriorLoL.exe in the installed folder).
 2. Configure your message titles, messages, hotkeys, and mod configurations (if needed).
 3. Test it in practice tool (get used to it).
 4. Have fun with it.
 
+*Do not modify the other files in the mod's folder.*
 
 Please use this mod responsibly.
 - Don't use this to spam the chat.
