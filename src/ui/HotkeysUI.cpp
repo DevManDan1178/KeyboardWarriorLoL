@@ -219,7 +219,7 @@ namespace HotkeysUI {
 
         ImGui::Dummy(ImVec2(0, 2));
         ImGui::Text("Shift is treated as a hotkey modifier (and not as an individual hotkey)");
-        ImGui::Text("[!] Alt and Ctrl are not supported as hotkey modifiers [!]");
+        ImGui::Text("[!] Alt, Ctrl and Enter are not supported [!]");
         ImGui::Dummy(ImVec2(0, 4));
         
         ImGui::Unindent(SECTION_INDENT);
