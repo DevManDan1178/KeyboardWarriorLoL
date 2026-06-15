@@ -341,12 +341,11 @@ Hotkey HotkeyManager::queryHotkey()
                 
                 SDL_Scancode sc = event.key.keysym.scancode;
 
-                // Ignore modifier keys
+                // Ignore keys
                 if (sc == SDL_SCANCODE_LCTRL  || sc == SDL_SCANCODE_RCTRL ||
                     sc == SDL_SCANCODE_LSHIFT || sc == SDL_SCANCODE_RSHIFT ||
                     sc == SDL_SCANCODE_LALT   || sc == SDL_SCANCODE_RALT ||
-                    areInvalidsModifiersHeld()){
-                    continue;
+                    sc == SDL_SCANCODE_RETURN || areInvalidsModifiersHeld()){
                     continue;
                 }
 
@@ -507,8 +506,8 @@ std::string HotkeyManager::hotkeyToString(const Hotkey& hotkey)
         switch (hotkey.keyCode)
         {
             case 1: ss << "Mouse Left"; break;
-            case 2: ss << "Mouse Right"; break;
-            case 3: ss << "Mouse Middle"; break;
+            case 2: ss << "Mouse Middle"; break;
+            case 3: ss << "Mouse Right"; break;
             default: ss << "Mouse" << hotkey.keyCode; break;
         }
     }
