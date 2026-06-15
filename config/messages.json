@@ -27,34 +27,5 @@
             "Inhibitor": [],
             "Turret": []
         }
-    },
-    "EventsKeyOrder": {
-        "GameState": [
-            "Game Start"
-        ],
-        "Kills": [
-            "First Blood",  
-            "Assisted Kill",
-            "Solo Kill",
-            "Double Kill",
-            "Triple Kill",
-            "Quadra Kill",
-            "Pentakill",
-            "Ace",
-            "Death"
-            
-        ],
-        "Objectives": [
-            "Dragon",
-            "Baron",
-            "Rift Herald",
-            "Void Grubs",
-            "Atakhan"
-        ],
-        "Structures": [
-            "First Turret",
-            "Turret",
-            "Inhibitor"
-        ]
     }
 }
