@@ -21,6 +21,9 @@ bool InputReader::s_ctrl  = false;
 bool InputReader::s_shift = false;
 bool InputReader::s_alt   = false;
 
+
+// Modifiers
+
 static bool isModifierKey(int keycode)
 {
     return keycode == KEY_LEFT_CTRL   || keycode == KEY_RIGHT_CTRL ||
@@ -37,8 +40,6 @@ static void updateModifier(int keycode, bool pressed)
     else if (keycode == KEY_LEFT_ALT || keycode == KEY_RIGHT_ALT)
         InputReader::s_alt = pressed;
 }
-
-// ---------------- Modifier state ----------------
 
 uint8_t InputReader::currentModifiers()
 {
@@ -65,12 +66,11 @@ bool InputReader::matchesModifiers(uint8_t required)
     return match;
 }
 
-// ---------------- Dispatch ----------------
+// Event handling
 
 void InputReader::dispatch(uiohook_event* event) {
     switch (event->type)
     {
-        // ---------------- KEY PRESS ----------------
         case EVENT_KEY_PRESSED:
         {
             int code = event->data.keyboard.keycode;
@@ -95,7 +95,7 @@ void InputReader::dispatch(uiohook_event* event) {
             break;
         }
 
-        // ---------------- KEY RELEASE ----------------
+
         case EVENT_KEY_RELEASED:
         {
             int code = event->data.keyboard.keycode;
@@ -118,10 +118,6 @@ void InputReader::dispatch(uiohook_event* event) {
             }
             break;
         }
-
-        // ---------------- MOUSE PRESS ----------------
-
-
 
 
         case EVENT_MOUSE_PRESSED:
@@ -146,7 +142,7 @@ void InputReader::dispatch(uiohook_event* event) {
                 if (!matchesModifiers(binding.hotkey.modifiers))
                     continue;
 
-                // score = number of modifier bits (more specific wins)
+    
                 int score = std::popcount(binding.hotkey.modifiers);
 
                 if (score > bestScore)
@@ -162,7 +158,7 @@ void InputReader::dispatch(uiohook_event* event) {
             break;
         }
 
-        // ---------------- MOUSE RELEASE ----------------
+
        case EVENT_MOUSE_RELEASED:
         {
             int btn = event->data.mouse.button;
@@ -203,7 +199,8 @@ void InputReader::dispatch(uiohook_event* event) {
     }
 }
 
-// ---------------- Hook lifecycle ----------------
+// Usage
+
 bool InputReader::start()
 {
     hook_set_dispatch_proc(dispatch);
@@ -223,7 +220,7 @@ void InputReader::stop()
     hook_stop();
 }
 
-// ---------------- Hotkeys ----------------
+// Hotkeys
 
 void InputReader::onHotkey(const Hotkey& hotkey, HotkeyCallback callback)
 {
@@ -241,7 +238,6 @@ void InputReader::clearHotkeys()
     s_releaseBindings.clear();
 }
                 
-// ---------------- Query ----------------
 
 bool InputReader::isKeyDown(int keycode)
 {
