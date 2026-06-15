@@ -45,7 +45,7 @@ namespace MessagesUI {
         static std::tuple<int, int> editedObject(-1, -1);
         static std::map<int, std::vector<MessageBuffer>> messageBuffersMap;
 
-        ImGui::Text("--  [Message Hotkeys]  --");
+        ImGui::Text("--  [Preset Messages]  --");
         ImGui::Indent(SECTION_INDENT);
         std::vector<Message> defaultMessagesList = messages.defaultMessages;
         
@@ -182,8 +182,8 @@ namespace MessagesUI {
         }
 
         ImGui::Unindent(CATEGORY_SELECTION_INDENT);
+        
         //EVENT MESSAGES
-
         ImGui::Dummy(ImVec2(0, 4));
         ImGui::Text("Event Messages");
         ImGui::Dummy(ImVec2(0, 2));
