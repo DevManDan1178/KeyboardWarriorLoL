@@ -62,17 +62,20 @@ bool MessagesManager::load() {
         MessagesManager::defaultMessages.push_back(parseMessageData(defaultMessages[i]));
     }
     
-
     json eventMessages = messagesData["Events"];
-    json eventsKeyOrder = messagesData["EventsKeyOrder"];
-    for (auto& [category, categoryMessages] : eventMessages.items()) {
+    
+    for (auto& [category, events] : eventKeyOrders) {
         std::unordered_map<std::string, std::vector<Message>> messagesMap;
         
+        json categoryMessages = eventMessages[category]; 
+        if (!categoryMessages.is_object()) {
+            MessagesManager::eventMessages[category] = messagesMap;
+            continue;
+        }
         for (auto& [event, messages] : categoryMessages.items()) {
-            if (!messages.is_array()) {
-                continue;
+            if (event.empty() || !messages.is_array()) {         
+               continue;
             }
-
             std::vector<Message> messageList;
             for (auto& messageInfo : messages) {
                 messageList.push_back(parseMessageData(messageInfo));
@@ -80,12 +83,6 @@ bool MessagesManager::load() {
             messagesMap[event] = messageList;
         }
         MessagesManager::eventMessages[category] = messagesMap;
-        
-        std::vector<std::string> keyOrder; 
-        for (int i = 0; i < eventsKeyOrder[category].size(); i++) {
-            std::string key = eventsKeyOrder[category][i];
-            keyOrder.push_back(key);
-        }
     }
     return true;
 }
@@ -103,6 +100,9 @@ bool MessagesManager::writeToJSON()
     // Events
     for (const auto& [category, categoryEventMessages] : eventMessages)
     {
+        if (category.empty()) {
+            continue;
+        }
         for (const auto& [eventKey, messages] : categoryEventMessages) {
             messagesData["Events"][category][eventKey] = json::array();
             
