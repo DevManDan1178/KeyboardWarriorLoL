@@ -8,11 +8,6 @@
 
 using json = nlohmann::json;
 
-const int IDLE_TIME_BETWEEN_CHECKS = 2000; //Milliseconds
-const int LOADING_TIME_BETWEEN_CHECKS = 500; //Milliseconds
-const int TIME_BETWEEN_EVENT_LOOP = 100; //Milliseconds [100]
-
-
 void LoLReader::stopCoreLoop(){
     if (workerThread.joinable())
     {
@@ -34,7 +29,7 @@ std::tuple<bool, LoLPlayersInfo> LoLReader::getPlayersInfo()
     try
     {
         // local player 
-        std::tuple<bool, std::string> httpQueryResultLocal = HTTPHelper::HttpGet("https://127.0.0.1:2999/liveclientdata/activeplayername");
+        std::tuple<bool, std::string> httpQueryResultLocal = HTTPHelper::HttpGet(PLAYER_NAME_QUERY_URL);
         auto [localSuccess, localBody] = httpQueryResultLocal;
         
         std::string localPlayerFullName;
@@ -45,7 +40,7 @@ std::tuple<bool, LoLPlayersInfo> LoLReader::getPlayersInfo()
         }
 
         // all players
-        std::tuple<bool, std::string> httpQueryResult = HTTPHelper::HttpGet("https://127.0.0.1:2999/liveclientdata/playerlist");
+        std::tuple<bool, std::string> httpQueryResult = HTTPHelper::HttpGet(PLAYER_LIST_QUERY_URL);
         auto [success, body] = httpQueryResult;
         if (body.empty())
             return {false, playersInfo};
@@ -107,7 +102,7 @@ void LoLReader::liveClientEventLoop()
         std::this_thread::sleep_for(std::chrono::milliseconds(TIME_BETWEEN_EVENT_LOOP));
         
         //Gets all event with id >= lastEventId
-        std::string queryAdress = "https://127.0.0.1:2999/liveclientdata/eventdata?eventID=" + std::to_string(std::max(currentEventId, 0));
+        std::string queryAdress = GAME_EVENTS_QUERY_URL_PREFIX + std::to_string(std::max(currentEventId, 0));
         std::tuple<bool, std::string> httpQueryResult = HTTPHelper::HttpGet(queryAdress);
         
         auto [success, body] = httpQueryResult;
@@ -160,13 +155,13 @@ void LoLReader::liveClientEventLoop()
 }
 
 bool LoLReader::isLoadingOrInGame() {
-    auto [success, body] = HTTPHelper::HttpGet("https://127.0.0.1:2999/liveclientdata/activeplayername");
+    auto [success, body] = HTTPHelper::HttpGet(PLAYER_NAME_QUERY_URL);
     return success;
 }
 
 bool LoLReader::queryForGame()
 {
-    auto [success, body] = HTTPHelper::HttpGet("https://127.0.0.1:2999/liveclientdata/allgamedata");
+    auto [success, body] = HTTPHelper::HttpGet(ALL_GAME_DATA_QUERY_URL);
 
     if (!success) {
         return false;

@@ -9,8 +9,14 @@
 #include "LoLEventHandler.h"
 #include "LoLTypes.h"
 
-const std::string url ="https://127.0.0.1:2999/liveclientdata/allgamedata";
+const std::string ALL_GAME_DATA_QUERY_URL = "https://127.0.0.1:2999/liveclientdata/allgamedata";
+const std::string PLAYER_NAME_QUERY_URL = "https://127.0.0.1:2999/liveclientdata/activeplayername";
+const std::string GAME_EVENTS_QUERY_URL_PREFIX = "https://127.0.0.1:2999/liveclientdata/eventdata?eventID=";
+const std::string PLAYER_LIST_QUERY_URL = "https://127.0.0.1:2999/liveclientdata/playerlist";
 
+const int IDLE_TIME_BETWEEN_CHECKS = 2000; 
+const int LOADING_TIME_BETWEEN_CHECKS = 500;
+const int TIME_BETWEEN_EVENT_LOOP = 100; 
 
 class LoLReader {
     public: 
