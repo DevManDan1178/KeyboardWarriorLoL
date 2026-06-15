@@ -86,7 +86,6 @@ bool MessagesManager::load() {
             std::string key = eventsKeyOrder[category][i];
             keyOrder.push_back(key);
         }
-        eventKeyOrders[category] = keyOrder;
     }
     return true;
 }
@@ -114,12 +113,6 @@ bool MessagesManager::writeToJSON()
                     messageToJSON(message)
                 );
             }
-        }
-    }
-    for (const auto& [category, keyOrder] : eventKeyOrders) {
-        messagesData["EventsKeyOrder"][category] = json::array();
-        for (int i = 0; i < keyOrder.size(); i++) {
-            messagesData["EventsKeyOrder"][category].push_back(keyOrder[i]);
         }
     }
 

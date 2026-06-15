@@ -13,19 +13,48 @@ struct Message {
           messageTitle(std::move(title)) {}
 };
 
-
 struct MessageBuffer {
     char content[128]{}; //Capped at 127 characters per message, + 1 
     char title[32]{};
 };
 
+const std::unordered_map<std::string, std::vector<std::string>> EVENT_KEY_ORDERS = {
+    {"GameState", {
+        "Game Start"
+    }},
+    {"Kills", {
+        "First Blood",  
+        "Assisted Kill",
+        "Solo Kill",
+        "Double Kill",
+        "Triple Kill",
+        "Quadra Kill",
+        "Pentakill",
+        "Ace",
+        "Death"
+        
+    }},
+    {"Objectives", {
+        "Dragon",
+        "Baron",
+        "Rift Herald",
+        "Void Grubs",
+        "Atakhan"
+    }},
+    {"Structures", {
+        "First Turret",
+        "Turret",
+        "Inhibitor"
+    }}
+};
+
 class MessagesManager {
-    public:
-        bool load();
+    public:  
         std::vector<Message> defaultMessages;
         std::unordered_map<std::string, std::unordered_map<std::string, std::vector<Message>>> eventMessages;
-        std::unordered_map<std::string, std::vector<std::string>> eventKeyOrders;
-
+        const std::unordered_map<std::string, std::vector<std::string>> eventKeyOrders = EVENT_KEY_ORDERS;
+       
+        bool load();
         bool setEventMessageContent(std::string category, std::string event, int index, std::string content);
         bool setEventMessageTitle(std::string category, std::string event, int index, std::string title);
         bool createNewEventMessage(std::string category, std::string event, Message message);
