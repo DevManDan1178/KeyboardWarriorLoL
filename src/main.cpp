@@ -1,4 +1,4 @@
-#include "Messages.h"
+#include "MessagesManager.h"
 #include "HotkeyManager.h"
 
 #include "ui/MessagesUI.h"
@@ -87,7 +87,7 @@ int main() {
     ImGui_ImplSDL2_InitForOpenGL(window, gl_context);
     ImGui_ImplOpenGL3_Init("#version 330");
 
-    Messages& messages = *(new Messages());
+    MessagesManager& messages = *(new MessagesManager());
     bool success = messages.load();
     if (!success) return 0;
 

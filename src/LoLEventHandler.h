@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../external/json.hpp"
-#include "Messages.h"
+#include "MessagesManager.h"
 #include "HotkeyManager.h"
 #include <string>
 #include "unordered_map"
@@ -20,7 +20,7 @@ using json = nlohmann::json;
 class LoLEventHandler {
     public:
         std::queue<std::tuple<std::string, std::string>> eventQueue; //{Category, eventName}
-        Messages &messages;
+        MessagesManager &messages;
         HotkeyManager &hotkeyManager;
         LoLPlayersInfo playersInfo;
         ChatSender &chatSender;
@@ -29,7 +29,7 @@ class LoLEventHandler {
         std::chrono::steady_clock::time_point currentEventStartTime;
 
 
-        LoLEventHandler(Messages &_messages, HotkeyManager &_hotkeyManager, ChatSender &_chatSender, std::function<void(std::string, std::string)> &_displayEventChange);
+        LoLEventHandler(MessagesManager &_messages, HotkeyManager &_hotkeyManager, ChatSender &_chatSender, std::function<void(std::string, std::string)> &_displayEventChange);
         void processLoLEvent(json LoLEvent);
         
         void closeCurrentEvent();

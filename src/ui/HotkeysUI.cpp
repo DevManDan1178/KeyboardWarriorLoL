@@ -50,8 +50,7 @@ namespace HotkeysUI {
                 ImGui::Text(std::format("Default Hotkey [{}]", idx + 1).c_str());
                 ImGui::Dummy(ImVec2(0, 2));
                 
-                
-
+            
                 std::optional<Hotkey> &failedChange = failedChanges[idx];
                 if (ImGui::Button(std::format("{} ##DefaultsHotkey{}", failedChange.has_value() ? hotkeyStr + " [cannot change to " + hotkeyManager.hotkeyToString(failedChange.value()) + "]"  : hotkeyStr, idx + 1).c_str())) {
                     Hotkey queriedHotkey = hotkeyManager.queryHotkey();                  

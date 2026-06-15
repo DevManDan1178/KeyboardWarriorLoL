@@ -19,7 +19,7 @@ struct MessageBuffer {
     char title[32]{};
 };
 
-class Messages {
+class MessagesManager {
     public:
         bool load();
         std::vector<Message> defaultMessages;

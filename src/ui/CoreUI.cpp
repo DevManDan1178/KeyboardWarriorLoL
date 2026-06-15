@@ -10,7 +10,7 @@
 #include <SDL_opengl.h>
 #include <SDL_syswm.h>
 
-#include "Messages.h"
+#include "MessagesManager.h"
 #include "HotkeyManager.h"
 #include "LoLEventHandler.h"
 
@@ -60,7 +60,7 @@ namespace CoreUI {
         ImGui::Separator();
     }
 
-    void mainUIFrame(SDL_Window* window, HWND hwnd, Messages& messages, HotkeyManager& hotkeyManager) {
+    void mainUIFrame(SDL_Window* window, HWND hwnd, MessagesManager& messages, HotkeyManager& hotkeyManager) {
         ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplSDL2_NewFrame();
         ImGui::NewFrame();
@@ -135,7 +135,7 @@ namespace CoreUI {
         ImGui::Dummy(size);
     }
 
-    void eventsOverlayUIFrame(SDL_Window* window, HWND hwnd, LoLEventHandler& lolEventHandler, Messages& messages, HotkeyManager& hotkeyManager, bool interactable, bool& alwaysVisible) {
+    void eventsOverlayUIFrame(SDL_Window* window, HWND hwnd, LoLEventHandler& lolEventHandler, MessagesManager& messages, HotkeyManager& hotkeyManager, bool interactable, bool& alwaysVisible) {
         auto [eventCategory, eventName] = lolEventHandler.getCurrentEvent();
 
         ImGui_ImplOpenGL3_NewFrame();
@@ -162,7 +162,6 @@ namespace CoreUI {
         ImGui::Text(std::format("{} - Toggle: [{}]", alwaysVisible ? "Always Visible" : "Visible On Event", hotkeyManager.hotkeyToString(hotkeyManager.toggleInGameAlwaysVisibleHotkey)).c_str());
         
         //Defaults
-        
         std::vector<Message> defaultMessages = messages.defaultMessages;
         if (defaultMessages.size() > 0) {
             std::vector<Hotkey> defaultHotkeys = hotkeyManager.defaultHotkeys;
@@ -178,7 +177,7 @@ namespace CoreUI {
         //Events
         ImGui::Dummy(ImVec2(0, 4));
         std::vector<Hotkey> eventHotkeys = hotkeyManager.eventHotkeys;
-        if (!(eventCategory.empty() || eventName.empty()) /*&& messages.eventMessages[eventCategory][eventName].size() > 0*/) {
+        if (!(eventCategory.empty() || eventName.empty()) && messages.eventMessages[eventCategory][eventName].size() > 0) {
             bool hasSkipEventHotkey = hotkeyManager.skipEventHotkey.bindType != BindType::None;
             std::string progressBarText = std::format("Event: \"{}\"{}", 
                 eventName, 

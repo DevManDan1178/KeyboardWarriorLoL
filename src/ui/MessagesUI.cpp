@@ -1,5 +1,5 @@
 #include "ui/MessagesUI.h"
-#include "Messages.h"
+#include "MessagesManager.h"
 #include "HotkeyManager.h"
 #include <vector>
 #include <string>
@@ -35,7 +35,7 @@ namespace MessagesUI {
         return hotkeyManager.hotkeyToString(hotkeyList[index]);
     }
 
-    void messagesMenu(Messages &messages, HotkeyManager &hotkeyManager) {
+    void messagesMenu(MessagesManager& messages, HotkeyManager& hotkeyManager) {
         std::vector<Message> &defaultMessages = messages.defaultMessages;
         std::unordered_map<std::string, std::unordered_map<std::string, std::vector<Message>>> &eventMessages = messages.eventMessages;
 
@@ -192,7 +192,9 @@ namespace MessagesUI {
         for (const auto& pairCategoryEventMessages : eventMessages) {  
             categoryIdx++; 
             std::string category = pairCategoryEventMessages.first;
-            
+            if (category.empty()) {
+                return;
+            }
             bool categoryVisibilityToggled = categoryToggleStates & (1 << categoryIdx);
                     
             ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(.5f, .5f, categoryVisibilityToggled ? 1.0f : .5f, 1.0f));

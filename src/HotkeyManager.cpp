@@ -46,7 +46,7 @@ static std::filesystem::path getConfigPath()
     return getExeDir() / "config" / "hotkeys.json";
 }
 
-HotkeyManager::HotkeyManager(Messages& _messages)
+HotkeyManager::HotkeyManager(MessagesManager& _messages)
 : messages(_messages) {}
 
 static Hotkey parseHotkeyData(json hotkeyData) {

@@ -1,5 +1,5 @@
 #pragma once
-#include "Messages.h"
+#include "MessagesManager.h"
 #include <string>
 #include <unordered_map>
 #include <vector>
@@ -40,9 +40,9 @@ class HotkeyManager {
         Hotkey toggleInGameInteractableHotkey;
         Hotkey toggleInGameAlwaysVisibleHotkey;
 
-        Messages& messages;
+        MessagesManager& messages;
         
-        HotkeyManager(Messages& messages);
+        HotkeyManager(MessagesManager& messages);
         
         bool load();
         Hotkey queryHotkey();

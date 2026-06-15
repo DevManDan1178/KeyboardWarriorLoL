@@ -1,9 +1,9 @@
 #pragma once
 
 #include "HotkeyManager.h"
-#include "Messages.h"
+#include "MessagesManager.h"
 
 namespace MessagesUI {
     extern int categoryToggleStates;
-    void messagesMenu(Messages &messages, HotkeyManager &hotkeyManager);
+    void messagesMenu(MessagesManager& messages, HotkeyManager &hotkeyManager);
 }

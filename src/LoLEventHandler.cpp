@@ -1,5 +1,5 @@
 #include "../external/json.hpp"
-#include "Messages.h"
+#include "MessagesManager.h"
 #include "HotkeyManager.h"
 #include "lolEventHandler.h"
 #include <iostream>
@@ -93,6 +93,10 @@ void LoLEventHandler::closeCurrentEvent() {
 
 
 void LoLEventHandler::queueLoLEvent(std::string eventCategory, std::string eventName, bool forceAsCurrent) {
+	std::vector<Message> messageList = messages.eventMessages[eventCategory][eventName];
+	if (messageList.size() == 0) {
+		return; //Ignore events with no messages
+	}
 	if (forceAsCurrent) {
 		updateCurrentEventStartTime();
 		std::queue<std::tuple<std::string, std::string>>().swap(eventQueue);
@@ -110,19 +114,17 @@ void LoLEventHandler::queueLoLEvent(std::string eventCategory, std::string event
 	}
 }
 
-LoLEventHandler::LoLEventHandler(Messages& _messages, HotkeyManager& _hotkeyManager, ChatSender& _chatSender, std::function<void(std::string, std::string)> &_displayEventChange) 
+LoLEventHandler::LoLEventHandler(MessagesManager& _messages, HotkeyManager& _hotkeyManager, ChatSender& _chatSender, std::function<void(std::string, std::string)> &_displayEventChange) 
 	: messages(_messages), hotkeyManager(_hotkeyManager), chatSender(_chatSender), displayEventChange(_displayEventChange) {}
 
 
 double lastPlayerKillTime = -1000.0;
 int currentMultikillStreak = 0;
-int gameKillCount = 0;
 
 void LoLEventHandler::reset() {
 	while (!eventQueue.empty()) {
 		eventQueue.pop();
 	}
-	gameKillCount = 0;
 	currentMultikillStreak = 0;
 	lastPlayerKillTime = -1000.0;
 }
@@ -147,13 +149,12 @@ void LoLEventHandler::processLoLEvent(json lolEvent) {
 	} 
     //Kills
 	if (eventName == "ChampionKill") {
-		gameKillCount++;
 		if (lolEvent["VictimName"].get<std::string>() == localSummonerName) {
 			queueLoLEvent("Kills", "Death");
 			return;
 		}
 		// Also avoid sending kill when it's first blood
-		if (!isKiller() || gameKillCount <= 1) {
+		if (!isKiller()) {
 			return;
 		}
 

@@ -2,7 +2,7 @@
 #include <iostream>
 #include <fstream>
 #include <filesystem>
-#include "Messages.h"
+#include "MessagesManager.h"
 
 using json = nlohmann::json;
 
@@ -46,7 +46,7 @@ static json messageToJSON(Message message) {
     return msgJSON;
 }
 
-bool Messages::load() {
+bool MessagesManager::load() {
     std::ifstream file(getConfigPath());
     if (!file.is_open()) {
         std::cout << "Failed to open file at path " << getConfigPath() << std::endl;
@@ -59,7 +59,7 @@ bool Messages::load() {
     
     json defaultMessages = messagesData["Defaults"];
     for (int i = 0; i < defaultMessages.size(); i++) {
-        Messages::defaultMessages.push_back(parseMessageData(defaultMessages[i]));
+        MessagesManager::defaultMessages.push_back(parseMessageData(defaultMessages[i]));
     }
     
 
@@ -79,7 +79,7 @@ bool Messages::load() {
             }
             messagesMap[event] = messageList;
         }
-        Messages::eventMessages[category] = messagesMap;
+        MessagesManager::eventMessages[category] = messagesMap;
         
         std::vector<std::string> keyOrder; 
         for (int i = 0; i < eventsKeyOrder[category].size(); i++) {
@@ -90,7 +90,7 @@ bool Messages::load() {
     }
     return true;
 }
-bool Messages::writeToJSON()
+bool MessagesManager::writeToJSON()
 {
     json messagesData;
 
@@ -142,11 +142,11 @@ bool Messages::writeToJSON()
     return true;
 }
 
-bool Messages::checkValidEventMessage(std::string category, std::string event, int index) {
+bool MessagesManager::checkValidEventMessage(std::string category, std::string event, int index) {
     return eventMessages.contains(category) && eventMessages[category].contains(event) && index < eventMessages[category][event].size();
 }
 
-bool Messages::setEventMessageContent(std::string category, std::string event, int index, std::string content) {
+bool MessagesManager::setEventMessageContent(std::string category, std::string event, int index, std::string content) {
     if (!checkValidEventMessage(category, event, index)) {
         std::cout << "attempt to set non existing message under category " << category << " and index " << index << std::endl;
         return false;
@@ -160,7 +160,7 @@ bool Messages::setEventMessageContent(std::string category, std::string event, i
     return true;
 }
 
-bool Messages::setEventMessageTitle(std::string category, std::string event, int index, std::string title) {
+bool MessagesManager::setEventMessageTitle(std::string category, std::string event, int index, std::string title) {
     if  (!checkValidEventMessage(category, event, index))  {
         std::cout << "attempt to set non existing message under category " << category << " and index " << index << std::endl;
         return false;
@@ -174,14 +174,14 @@ bool Messages::setEventMessageTitle(std::string category, std::string event, int
     return true;
 }
 
-void Messages::attemptWriteToJSON() {
+void MessagesManager::attemptWriteToJSON() {
     bool success = writeToJSON();
     if (!success) {
         std::cout << "unable to write messages to JSON" << std::endl;
     }
 }
 
-bool Messages::createNewEventMessage(std::string category, std::string event, Message message) {
+bool MessagesManager::createNewEventMessage(std::string category, std::string event, Message message) {
     if (!(eventMessages.contains(category) && eventMessages[category].contains(event))) {
         std::cout << "attempt to create message under non existing category " << category << std::endl;
         return false;
@@ -191,7 +191,7 @@ bool Messages::createNewEventMessage(std::string category, std::string event, Me
     return true;
 }
 
-bool Messages::deleteEventMessage(std::string category, std::string event, int index) {
+bool MessagesManager::deleteEventMessage(std::string category, std::string event, int index) {
      if (!checkValidEventMessage(category, event, index)) {
         std::cout << "attempt to delete non existing message under category " << category << " and index " << index << std::endl;
         return false;
@@ -201,7 +201,7 @@ bool Messages::deleteEventMessage(std::string category, std::string event, int i
     return true;
 }
 
- bool Messages::setDefaultMessageContent(int index, std::string content) {
+ bool MessagesManager::setDefaultMessageContent(int index, std::string content) {
     if (index >= defaultMessages.size()) {
         std::cout << "Attempt to modify non existing default message at index " << index << std::endl;
         return false;
@@ -210,7 +210,7 @@ bool Messages::deleteEventMessage(std::string category, std::string event, int i
     attemptWriteToJSON();
     return true;
  }
-bool Messages::setDefaultMessageTitle(int index, std::string title) {
+bool MessagesManager::setDefaultMessageTitle(int index, std::string title) {
     if (index >= defaultMessages.size()) {
         std::cout << "Attempt to modify non existing default message at index " << index << std::endl;
         return false;
@@ -219,12 +219,12 @@ bool Messages::setDefaultMessageTitle(int index, std::string title) {
     attemptWriteToJSON();
     return true;
 }
-bool Messages::createNewDefaultMessage(Message message) {
+bool MessagesManager::createNewDefaultMessage(Message message) {
     defaultMessages.push_back(message);
     attemptWriteToJSON();
     return true;
 }
-bool Messages::deleteDefaultMessage(int index) {
+bool MessagesManager::deleteDefaultMessage(int index) {
     if (index >= defaultMessages.size()) {
         std::cout << "Attempt to delete non existing default message at index " << index << std::endl;
         return false;
