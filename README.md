@@ -113,8 +113,9 @@ Example:
 ```text
 Default Message 1
 Title = "GLHF"
-Content = "Good luck have fun"
+Content = "/All Good luck have fun"
 ```
+The message content is what will be typed into the chat bar, so start the message with `/All` to type in All Chat.
 
 Hotkey slots can be configured by clicking the hotkey button and pressing a valid hotkey.
 
