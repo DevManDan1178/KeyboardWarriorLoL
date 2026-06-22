@@ -6,7 +6,7 @@ Messages can be triggered at any time or unlocked dynamically based on detected 
 The mod supports two types of messages:
 
 * **Default Messages** — Always available and can be sent at any time.
-* **Event Messages** — Unlocked by specific in-game events and can only be sent after the corresponding event has been detected.
+* **Event Messages** — Unlocked by specific in-game events and can only be sent after the corresponding event has been detected (for a limited duration).
 
 ## How to Setup
 - Click on `Releases`
