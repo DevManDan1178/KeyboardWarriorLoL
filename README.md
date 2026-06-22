@@ -1,7 +1,7 @@
 # KeyboardWarriorLoL
 
 KeyboardWarriorLoL is a League of Legends companion application that allows players to send predefined chat messages using configurable hotkeys. 
-Messages can be triggered at any time or unlocked dynamically based on detected in-game events such as the takedown of kills, objectives, and structures.
+Messages can be triggered at any time or unlocked dynamically based on detected in-game events such as kills and the takedown of objectives and structures.
 
 The mod supports two types of messages:
 
