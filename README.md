@@ -1,12 +1,12 @@
 # KeyboardWarriorLoL
 
-KeyboardWarriorLoL is a League of Legends mod that allows players to send predefined chat messages using configurable hotkeys. 
-Messages can be triggered at any time or unlocked dynamically based on detected in-game events such as the takedown of kills, objectives, and structures.
+KeyboardWarriorLoL is a League of Legends companion application that allows players to send predefined chat messages using configurable hotkeys. 
+Messages can be triggered at any time or unlocked dynamically based on detected in-game events such as kills and the takedown of objectives and structures.
 
 The mod supports two types of messages:
 
 * **Default Messages** — Always available and can be sent at any time.
-* **Event Messages** — Unlocked by specific in-game events and can only be sent after the corresponding event has been detected.
+* **Event Messages** — Unlocked by specific in-game events and can only be sent after the corresponding event has been detected (for a limited duration).
 
 ## How to Setup
 - Click on `Releases`
@@ -113,8 +113,9 @@ Example:
 ```text
 Default Message 1
 Title = "GLHF"
-Content = "Good luck have fun"
+Content = "/All Good luck have fun"
 ```
+The message content is what will be typed into the chat bar, so start the message with `/All` to type in All Chat.
 
 Hotkey slots can be configured by clicking the hotkey button and pressing a valid hotkey.
 
