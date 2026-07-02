@@ -10,6 +10,7 @@ add_executable(KeyboardWarriorLoLMod
     managers/MessagesManager.cpp
     
     input/InputReader.cpp
+    input/HotkeyConverter.cpp
 
     ui/MessagesUI.cpp
     ui/HotkeysUI.cpp
