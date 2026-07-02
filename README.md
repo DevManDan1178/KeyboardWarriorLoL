@@ -32,9 +32,9 @@ Default messages are always available.
 
 Example:
 
-* "gj team"
-* "group for dragon"
-* "wait for me dont fight"
+* `gj team`
+* `group for dragon`
+* `wait for me dont fight`
 
 Pressing the assigned hotkey immediately sends the configured message.
 
@@ -109,13 +109,16 @@ Each message slot can be configured with:
 * Title
 * Message Content
 
+The message content is what will be typed into the chat bar, so start the message with `/All` to type in All Chat.
+
+Message sizes are limited to the same size as LoL in-game chats *(127 characters long)*.
+
 Example:
 ```text
 Default Message 1
 Title = "GLHF"
 Content = "/All Good luck have fun"
 ```
-The message content is what will be typed into the chat bar, so start the message with `/All` to type in All Chat.
 
 Hotkey slots can be configured by clicking the hotkey button and pressing a valid hotkey.
 
@@ -123,12 +126,12 @@ Example:
 
 ```text
 Default Hotkey 1
-[Hotkey]   [Delete Hotkey]
+[Mouse 5]   [Delete Hotkey]
 ```
 
 ## Usage
-
-1. Launch League of Legends alongside KeyboardWarriorLoL (KeyboardWarriorLoL.exe in the installed folder).
+0. (Optional) Create a shortcut for the KeyboardWarriorLoL.exe executable in the installed folder.
+1. Launch League of Legends alongside KeyboardWarriorLoL (KeyboardWarriorLoL.exe).
 2. Configure your message titles, messages, hotkeys, and mod configurations (if needed).
 3. Test it in practice tool (get used to it).
 4. Have fun with it.
@@ -141,7 +144,25 @@ Please use this mod responsibly.
 - Follow Riot Games' rules and community guidelines.
 
 
-## Disclaimer
-*KeyboardWarriorLoL is an unofficial third-party tool and is not affiliated with or endorsed by Riot Games. Use of third-party software may violate Riot Games policies or Terms of Service. Users assume all risk associated with using this software, including potential account penalties.*
+## Limitations
 
+- `Alt` and `CTRL` keys are not supported due to their implementation on the LoL client.
+    - `Alt + Enter` will toggle fullscreen, so it can absolutely not be used with sending a message
+    - `CTRL` will block opening the in-game chat with `Enter`
+- `Enter` key is not supported as it risks disrupting the mod's process of message sending.
+    - The mod sends in-game messages by inputting `Enter`, `Your Message` character by character, and `Enter`
+    - By pressing `Enter` before this, the chat is open then closed before the message is typed, then reopened
+- No `GameEnd` event on nexus destruction (rip).
+    - Unfortunately, the client's API's `GameEnd` event fires after the victory screen, so it is basically useless.
+    - Besides that, there are no reliable ways to detect a game ending.
+
+## Disclaimer
+
+I have tried reaching out to Riot Games by filing a support ticket in the `Discuss Personal Suspension or Restriction` section and asking if this mod was allowed.
+
+Their response has neither stated it as being allowed nor stated it as being against terms of service. 
+
+You should be fine as long as you use it responsibly *(use at your own risk)*.
+
+*KeyboardWarriorLoL is an unofficial third-party tool and is not affiliated with or endorsed by Riot Games. Use of third-party software may violate Riot Games policies or Terms of Service. Users assume all risk associated with using this software, including potential account penalties.*
 
