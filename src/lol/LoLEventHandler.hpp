@@ -1,13 +1,13 @@
 #pragma once
 
 #include "../external/json.hpp"
-#include "MessagesManager.h"
-#include "HotkeyManager.h"
+#include "managers/MessagesManager.hpp"
+#include "managers/HotkeyManager.hpp"
 #include <string>
 #include "unordered_map"
 #include <variant>
 #include "LoLTypes.h"
-#include "ChatSender.h"
+#include "lol/LoLChatSender.hpp"
 #include <functional>
 #include <queue>
 #include <tuple>
@@ -23,13 +23,13 @@ class LoLEventHandler {
         MessagesManager &messages;
         HotkeyManager &hotkeyManager;
         LoLPlayersInfo playersInfo;
-        ChatSender &chatSender;
+        LoLChatSender &chatSender;
         std::function<void(std::string, std::string)> &displayEventChange;
 
         std::chrono::steady_clock::time_point currentEventStartTime;
 
 
-        LoLEventHandler(MessagesManager &_messages, HotkeyManager &_hotkeyManager, ChatSender &_chatSender, std::function<void(std::string, std::string)> &_displayEventChange);
+        LoLEventHandler(MessagesManager &_messages, HotkeyManager &_hotkeyManager, LoLChatSender &_chatSender, std::function<void(std::string, std::string)> &_displayEventChange);
         void processLoLEvent(json LoLEvent);
         
         void closeCurrentEvent();

@@ -1,5 +1,6 @@
 
-#include "HotkeyManager.h"
+#include"managers/HotkeyManager.hpp"
+#include "input/HotkeyConverter.hpp"
 #include "imgui.h"
 #include <algorithm>
 #include <string>
@@ -44,7 +45,7 @@ namespace HotkeysUI {
 
             for (int idx = 0; idx < defaultHotkeys.size(); idx ++) {
                 Hotkey hotkey = defaultHotkeys[idx];
-                std::string hotkeyStr = hotkeyManager.hotkeyToString(hotkey);
+                std::string hotkeyStr = HotkeyConverter::hotkeyToString(hotkey);
                 
                 ImGui::Dummy(ImVec2(0, 2));
                 ImGui::Text(std::format("Default Hotkey [{}]", idx + 1).c_str());
@@ -52,7 +53,7 @@ namespace HotkeysUI {
                 
             
                 std::optional<Hotkey> &failedChange = failedChanges[idx];
-                if (ImGui::Button(std::format("{} ##DefaultsHotkey{}", failedChange.has_value() ? hotkeyStr + " [cannot change to " + hotkeyManager.hotkeyToString(failedChange.value()) + "]"  : hotkeyStr, idx + 1).c_str())) {
+                if (ImGui::Button(std::format("{} ##DefaultsHotkey{}", failedChange.has_value() ? hotkeyStr + " [cannot change to " + HotkeyConverter::hotkeyToString(failedChange.value()) + "]"  : hotkeyStr, idx + 1).c_str())) {
                     Hotkey queriedHotkey = hotkeyManager.queryHotkey();                  
                     bool success = hotkeyManager.setHotkey(queriedHotkey, false, idx);
                     
@@ -103,14 +104,14 @@ namespace HotkeysUI {
             }
             for (int idx = 0; idx < eventHotkeys.size(); idx ++) {
                 Hotkey hotkey =eventHotkeys[idx];
-                std::string hotkeyStr = hotkeyManager.hotkeyToString(hotkey);
+                std::string hotkeyStr = HotkeyConverter::hotkeyToString(hotkey);
                 
                 ImGui::Dummy(ImVec2(0, 2));
                 ImGui::Text(std::format("Event Hotkey [{}]", idx + 1).c_str());
                 ImGui::Dummy(ImVec2(0, 2));
         
                 std::optional<Hotkey> &failedChange = failedChanges[idx];
-                if (ImGui::Button(std::format("{} ##EventsHotkey{}", failedChange.has_value() ? hotkeyStr + " [cannot not change to " + hotkeyManager.hotkeyToString(failedChange.value()) + "]"  : hotkeyStr, idx + 1).c_str())) {
+                if (ImGui::Button(std::format("{} ##EventsHotkey{}", failedChange.has_value() ? hotkeyStr + " [cannot not change to " + HotkeyConverter::hotkeyToString(failedChange.value()) + "]"  : hotkeyStr, idx + 1).c_str())) {
                     Hotkey queriedHotkey = hotkeyManager.queryHotkey();
                     
                     bool success = hotkeyManager.setHotkey(queriedHotkey, true, idx);
@@ -147,10 +148,10 @@ namespace HotkeysUI {
         ImGui::Text("Skip Event Hotkey");
         ImGui::Dummy(ImVec2(0, 2));
         {
-            std::string hotkeyStr = hotkeyManager.hotkeyToString(hotkeyManager.skipEventHotkey);
+            std::string hotkeyStr = HotkeyConverter::hotkeyToString(hotkeyManager.skipEventHotkey);
             static std::optional<Hotkey> failedChange;
             
-            if (ImGui::Button(std::format("{} ##SkipEventHotkey", failedChange.has_value() ? hotkeyStr + " [cannot not change to " + hotkeyManager.hotkeyToString(failedChange.value()) + "]"  : hotkeyStr).c_str())) {
+            if (ImGui::Button(std::format("{} ##SkipEventHotkey", failedChange.has_value() ? hotkeyStr + " [cannot not change to " + HotkeyConverter::hotkeyToString(failedChange.value()) + "]"  : hotkeyStr).c_str())) {
                 Hotkey queriedHotkey = hotkeyManager.queryHotkey();
                 
                 bool success = hotkeyManager.setSkipEventHotkey(queriedHotkey);
@@ -168,9 +169,9 @@ namespace HotkeysUI {
         ImGui::Dummy(ImVec2(0, 2));
         {
             static std::optional<Hotkey> failedChange;
-            std::string hotkeyStr = hotkeyManager.hotkeyToString(hotkeyManager.toggleInGameInteractableHotkey);
+            std::string hotkeyStr = HotkeyConverter::hotkeyToString(hotkeyManager.toggleInGameInteractableHotkey);
             ImGui::Indent(CATEGORY_INDENT);
-            if (ImGui::Button(std::format("{} ##ToggleInGameInteractable", failedChange.has_value() ? hotkeyStr + " [cannot not change to " + hotkeyManager.hotkeyToString(failedChange.value()) + "]"  : hotkeyStr.c_str()).c_str())) {
+            if (ImGui::Button(std::format("{} ##ToggleInGameInteractable", failedChange.has_value() ? hotkeyStr + " [cannot not change to " + HotkeyConverter::hotkeyToString(failedChange.value()) + "]"  : hotkeyStr.c_str()).c_str())) {
                 Hotkey queriedHotkey = hotkeyManager.queryHotkey();
                 
                 bool success = hotkeyManager.setToggleInGameInteractableHotkey(queriedHotkey);
@@ -188,9 +189,9 @@ namespace HotkeysUI {
         ImGui::Dummy(ImVec2(0, 2));
         {
             static std::optional<Hotkey> failedChange;
-            std::string hotkeyStr = hotkeyManager.hotkeyToString(hotkeyManager.toggleInGameAlwaysVisibleHotkey);
+            std::string hotkeyStr = HotkeyConverter::hotkeyToString(hotkeyManager.toggleInGameAlwaysVisibleHotkey);
             ImGui::Indent(CATEGORY_INDENT);
-            if (ImGui::Button(std::format("{} ##ToggleInGameInteractable", failedChange.has_value() ? hotkeyStr + " [cannot not change to " + hotkeyManager.hotkeyToString(failedChange.value()) + "]"  : hotkeyStr.c_str()).c_str())) {
+            if (ImGui::Button(std::format("{} ##ToggleInGameInteractable", failedChange.has_value() ? hotkeyStr + " [cannot not change to " + HotkeyConverter::hotkeyToString(failedChange.value()) + "]"  : hotkeyStr.c_str()).c_str())) {
                 Hotkey queriedHotkey = hotkeyManager.queryHotkey();
                 
                 bool success = hotkeyManager.setToggleInGameAlwaysVisibleHotkey(queriedHotkey);

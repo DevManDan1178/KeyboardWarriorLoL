@@ -6,7 +6,7 @@
 #include <tuple>
 #include <queue>
 #include "../external/json.hpp"
-#include "LoLEventHandler.h"
+#include "lol/LoLEventHandler.hpp"
 #include "LoLTypes.h"
 
 const std::string ALL_GAME_DATA_QUERY_URL = "https://127.0.0.1:2999/liveclientdata/allgamedata";

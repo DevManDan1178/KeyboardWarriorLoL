@@ -1,6 +1,6 @@
 #pragma once
 
-#include <HotkeyManager.h>
+#include "managers/HotkeyManager.hpp"
 
 namespace HotkeysUI {
     void hotkeysUI(HotkeyManager& HotkeyManager);

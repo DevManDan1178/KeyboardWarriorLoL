@@ -1,8 +1,8 @@
 #pragma once
 
-#include "LoLEventHandler.h"
-#include "MessagesManager.h"
-#include "HotkeyManager.h"
+#include "lol/LoLEventHandler.hpp"
+#include "managers/MessagesManager.hpp"
+#include "managers/HotkeyManager.hpp"
 #include <SDL_syswm.h>
 
 namespace CoreUI {

@@ -1,17 +1,17 @@
 #define NOMINMAX
 #include <windows.h>
-#include "ChatSender.h"
+#include "lol/LoLChatSender.hpp"
 #include <iostream>
 #include <thread>
 
-const int PRE_CHAT_BACKSPACE_COUNT = 5; //In case shift is used, which starts message with /All 
+const int PRE_CHAT_BACKSPACE_COUNT = 5; //In case shift is used, which starts message with /All, backspace to empty message
 
 static void sleep_ms(int ms)
 {
     std::this_thread::sleep_for(std::chrono::milliseconds(ms));
 }
 
-void ChatSender::sendKey(WORD vk)
+void LoLChatSender::sendKey(WORD vk)
 {
     INPUT input = {};
     input.type = INPUT_KEYBOARD;
@@ -29,7 +29,7 @@ void ChatSender::sendKey(WORD vk)
     SendInput(1, &input, sizeof(INPUT));
 }
 
-void ChatSender::sendUnicodeChar(wchar_t ch)
+void LoLChatSender::sendUnicodeChar(wchar_t ch)
 {
     INPUT inputs[2] = {};
 
@@ -48,7 +48,7 @@ void ChatSender::sendUnicodeChar(wchar_t ch)
     SendInput(2, inputs, sizeof(INPUT));
 }
 
-void ChatSender::sendMessage(const std::string& msg)
+void LoLChatSender::sendMessage(const std::string& msg)
 {
     
      // Open chat (Enter)
@@ -82,7 +82,7 @@ void ChatSender::sendMessage(const std::string& msg)
     for (wchar_t ch : wmsg)
     {
         sendUnicodeChar(ch);
-    sleep_ms(1);
+        sleep_ms(1);
     }
 
     sleep_ms(1);

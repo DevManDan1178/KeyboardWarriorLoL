@@ -1,4 +1,4 @@
-#include <LoLReader.h>
+#include "lol/LoLReader.hpp"
 #include "helpers/HttpHelper.h"
 #include <queue>
 #include <thread>

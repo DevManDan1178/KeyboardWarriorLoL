@@ -4,9 +4,15 @@
 #include <functional>
 #include <unordered_map>
 #include <vector>
-#include "HotkeyManager.h" 
+#include "managers/HotkeyManager.hpp" 
 
 using HotkeyCallback = std::function<void()>;
+
+struct HotkeyBinding {
+    Hotkey hotkey;
+    HotkeyCallback callback;
+};
+
 
 class InputReader {
 public:
@@ -22,22 +28,10 @@ public:
     static bool isKeyDown(int keycode);
     static void dispatch(uiohook_event* event);
     
-    static bool s_ctrl;
-    static bool s_shift;
-    static bool s_alt;
-    
 private:
     
     static bool matchesModifiers(uint8_t required);
 
-    struct HotkeyBinding {
-        Hotkey      hotkey;
-        HotkeyCallback callback;
-    };
-
-    static std::vector<HotkeyBinding>    s_bindings;
-    static std::vector<InputReader::HotkeyBinding> s_releaseBindings;
-    static std::unordered_map<int, bool> s_keyStates;
-
+    
 
 };

@@ -1,5 +1,6 @@
-#include "MessagesUI.h"
-#include "HotkeysUI.h"
+#include "ui/MessagesUI.h"
+#include "ui/HotkeysUI.h"
+#include "input/HotkeyConverter.hpp"
 
 #include <iostream>
 #include "imgui.h"
@@ -10,9 +11,9 @@
 #include <SDL_opengl.h>
 #include <SDL_syswm.h>
 
-#include "MessagesManager.h"
-#include "HotkeyManager.h"
-#include "LoLEventHandler.h"
+#include "managers/MessagesManager.hpp"
+#include "managers/HotkeyManager.hpp"
+#include "lol/LoLEventHandler.hpp"
 
 const ImVec4 DEFAULT_TITLE_BAR_DRAG_COLOR = ImVec4(0.2f, 0.2f, 0.2f, 0.5f);
 const ImVec4 DRAGGABLE_TITLE_BAR_DRAG_COLOR = ImVec4(0.4f, 0.4f, 0.4f, 0.75f);
@@ -78,7 +79,6 @@ namespace CoreUI {
         );
 
         //drawTitleBar(window, hwnd, true, true); not borderless anymore, so already has the default one
-
         MessagesUI::messagesMenu(messages, hotkeyManager);
         ImGui::Dummy(ImVec2(0, 12));
         HotkeysUI::hotkeysUI(hotkeyManager);
@@ -158,8 +158,8 @@ namespace CoreUI {
 
         drawTitleBar(window, hwnd, interactable, false);
 
-        ImGui::Text(std::format("{} - Toggle: [{}]", interactable ? "Draggable" : "Anchored", hotkeyManager.hotkeyToString(hotkeyManager.toggleInGameInteractableHotkey)).c_str());
-        ImGui::Text(std::format("{} - Toggle: [{}]", alwaysVisible ? "Always Visible" : "Visible On Event", hotkeyManager.hotkeyToString(hotkeyManager.toggleInGameAlwaysVisibleHotkey)).c_str());
+        ImGui::Text(std::format("{} - Toggle: [{}]", interactable ? "Draggable" : "Anchored", HotkeyConverter::hotkeyToString(hotkeyManager.toggleInGameInteractableHotkey)).c_str());
+        ImGui::Text(std::format("{} - Toggle: [{}]", alwaysVisible ? "Always Visible" : "Visible On Event", HotkeyConverter::hotkeyToString(hotkeyManager.toggleInGameAlwaysVisibleHotkey)).c_str());
         
         //Defaults
         std::vector<Message> defaultMessages = messages.defaultMessages;
@@ -169,7 +169,7 @@ namespace CoreUI {
             ImGui::Text("Default Messages");
             for (int i = 0; i < defaultMessages.size(); i++) {
                 std::string messageTitle = defaultMessages[i].messageTitle;
-                std::string hotkeyStr = defaultHotkeys.size() > i ? hotkeyManager.hotkeyToString(defaultHotkeys[i]) : "undefined";
+                std::string hotkeyStr = defaultHotkeys.size() > i ? HotkeyConverter::hotkeyToString(defaultHotkeys[i]) : "undefined";
                 ImGui::Text(std::format("Message {}: \"{}\" - [{}]", i + 1, messageTitle, hotkeyStr).c_str());
             }
         }
@@ -181,14 +181,14 @@ namespace CoreUI {
             bool hasSkipEventHotkey = hotkeyManager.skipEventHotkey.bindType != BindType::None;
             std::string progressBarText = std::format("Event: \"{}\"{}", 
                 eventName, 
-                hasSkipEventHotkey ? std::format(" - Skip: [{}]", hotkeyManager.hotkeyToString(hotkeyManager.skipEventHotkey)) : ""
+                hasSkipEventHotkey ? std::format(" - Skip: [{}]", HotkeyConverter::hotkeyToString(hotkeyManager.skipEventHotkey)) : ""
                 );
             drawProgressBar(lolEventHandler.getHotkeyExpirationProgress(), progressBarText);
             
             std::vector<Message> eventMessages = messages.eventMessages[eventCategory][eventName];
             for (int i = 0; i < eventMessages.size(); i++) {
                 std::string messageTitle = eventMessages[i].messageTitle;
-                std::string hotkeyStr = eventHotkeys.size() > i ? hotkeyManager.hotkeyToString(eventHotkeys[i]) : "undefined";
+                std::string hotkeyStr = eventHotkeys.size() > i ? HotkeyConverter::hotkeyToString(eventHotkeys[i]) : "undefined";
                 ImGui::Text(std::format("Message {}: \"{}\" - [{}]", i + 1, messageTitle, hotkeyStr).c_str());
             }
             auto [nextEventCategory, nextEventName] = lolEventHandler.getNextEvent();
