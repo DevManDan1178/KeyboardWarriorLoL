@@ -1,6 +1,7 @@
 #include "ui/MessagesUI.h"
 #include "managers/MessagesManager.hpp"
 #include "managers/HotkeyManager.hpp"
+#include "input/HotkeyConverter.hpp"
 #include <vector>
 #include <string>
 #include <format>
@@ -32,7 +33,7 @@ namespace MessagesUI {
         if (index >= hotkeyList.size()) {
             return "undefined";
         }
-        return hotkeyManager.hotkeyToString(hotkeyList[index]);
+        return HotkeyConverter::hotkeyToString(hotkeyList[index]);
     }
 
     void messagesMenu(MessagesManager& messages, HotkeyManager& hotkeyManager) {
