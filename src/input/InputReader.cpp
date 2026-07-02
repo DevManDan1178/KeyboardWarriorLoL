@@ -13,48 +13,53 @@
 #define KEY_LEFT_ALT    0x0038
 #define KEY_RIGHT_ALT   0xE038
 
-// Static state
-std::vector<InputReader::HotkeyBinding> InputReader::s_bindings;
-std::vector<InputReader::HotkeyBinding> InputReader::s_releaseBindings;
-std::unordered_map<int, bool> InputReader::s_keyStates;
+std::vector<HotkeyBinding> pressedBindings;
+std::vector<HotkeyBinding> releaseBindings;
+std::unordered_map<int, bool> keyStates;
 
-bool InputReader::s_ctrl  = false;
-bool InputReader::s_shift = false;
-bool InputReader::s_alt   = false;
+bool ctrlPressed  = false;
+bool shiftPressed = false;
+bool altPressed   = false;
 
 
 // Modifiers
-
-static bool isModifierKey(int keycode)
+bool isModifierKey(int keycode)
 {   
     return keycode == KEY_LEFT_CTRL   || keycode == KEY_RIGHT_CTRL ||
            keycode == KEY_LEFT_SHIFT  || keycode == KEY_RIGHT_SHIFT ||
            keycode == KEY_LEFT_ALT    || keycode == KEY_RIGHT_ALT;
 }
 
-static void updateModifier(int keycode, bool pressed)
+void updateModifier(int keycode, bool pressed)
 {
     if (keycode == KEY_LEFT_CTRL || keycode == KEY_RIGHT_CTRL)
-        InputReader::s_ctrl = pressed;
+        ctrlPressed = pressed;
     else if (keycode == KEY_LEFT_SHIFT || keycode == KEY_RIGHT_SHIFT)
-        InputReader::s_shift = pressed;
-    else if (keycode == KEY_LEFT_ALT || keycode == KEY_RIGHT_ALT)
-        InputReader::s_alt = pressed;
+        shiftPressed = pressed;
+    else if (keycode == KEY_LEFT_ALT || keycode == KEY_RIGHT_ALT) 
+        altPressed = pressed;
 }
+
 
 uint8_t InputReader::currentModifiers()
 {
     uint8_t mods = Modifiers::None;
 
-    bool ctrl  = s_ctrl  || (GetAsyncKeyState(VK_CONTROL) & 0x8000);
-    bool shift = s_shift || (GetAsyncKeyState(VK_SHIFT) & 0x8000);
-    bool alt   = s_alt   || (GetAsyncKeyState(VK_MENU) & 0x8000);
+    bool ctrl  = ctrlPressed || (GetAsyncKeyState(VK_CONTROL) & 0x8000);
+    bool shift = shiftPressed || (GetAsyncKeyState(VK_SHIFT) & 0x8000);
+    bool alt   = altPressed || (GetAsyncKeyState(VK_MENU) & 0x8000);
 
-    //if (ctrl)  mods |= Modifiers::Ctrl;
     if (shift) {
         mods |= Modifiers::Shift;
     } 
-    //if (alt)   mods |= Modifiers::Alt;
+
+    if (alt) {
+        mods |= Modifiers::Alt;
+    }
+
+    if (ctrl) {
+        mods |= Modifiers::Ctrl;
+    }
 
     return mods;
 }
@@ -62,13 +67,11 @@ uint8_t InputReader::currentModifiers()
 bool InputReader::matchesModifiers(uint8_t required)
 {
     uint8_t current = currentModifiers();
-    bool match = (current & required) == required;
 
-    return match;
+    return current == required;
 }
 
 // Event handling
-
 void InputReader::dispatch(uiohook_event* event) {
     switch (event->type)
     {
@@ -77,11 +80,11 @@ void InputReader::dispatch(uiohook_event* event) {
             int code = event->data.keyboard.keycode;
 
             updateModifier(code, true);
-            s_keyStates[code] = true;
+            keyStates[code] = true;
 
             if (!isModifierKey(code))
             {
-                for (auto& binding : s_bindings)
+                for (auto& binding : pressedBindings)
                 {
                     if (binding.hotkey.bindType == BindType::Keyboard &&
                         binding.hotkey.keyCode == code)
@@ -101,11 +104,11 @@ void InputReader::dispatch(uiohook_event* event) {
         {
             int code = event->data.keyboard.keycode;
             updateModifier(code, false);
-            s_keyStates[code] = false;
+            keyStates[code] = false;
 
             if (!isModifierKey(code))
             {
-                for (auto& binding : s_releaseBindings)
+                for (auto& binding : releaseBindings)
                 {
                     if (binding.hotkey.bindType == BindType::Keyboard &&
                         binding.hotkey.keyCode == code)
@@ -125,23 +128,29 @@ void InputReader::dispatch(uiohook_event* event) {
         {
             int btn = event->data.mouse.button;
 
-            s_keyStates[-btn] = true;
+            keyStates[-btn] = true;
 
             uint8_t mods = currentModifiers();
 
-            InputReader::HotkeyBinding* bestMatch = nullptr;
+            HotkeyBinding* bestMatch = nullptr;
             int bestScore = -1;
 
-            for (auto& binding : s_bindings)
+            for (auto& binding : pressedBindings)
             {
-                if (binding.hotkey.bindType != BindType::Mouse)
+                if (binding.hotkey.bindType != BindType::Mouse) {
                     continue;
+                }
+                    
 
-                if (binding.hotkey.keyCode != btn)
+                if (binding.hotkey.keyCode != btn) {
                     continue;
+                }
+                    
 
-                if (!matchesModifiers(binding.hotkey.modifiers))
+                if (!matchesModifiers(binding.hotkey.modifiers)) {
                     continue;
+                }
+                    
 
     
                 int score = std::popcount(binding.hotkey.modifiers);
@@ -153,8 +162,10 @@ void InputReader::dispatch(uiohook_event* event) {
                 }
             }
 
-            if (bestMatch)
+            if (bestMatch) {
                 bestMatch->callback();
+            }
+                
 
             break;
         }
@@ -164,21 +175,27 @@ void InputReader::dispatch(uiohook_event* event) {
         {
             int btn = event->data.mouse.button;
 
-            s_keyStates[-btn] = false;
+            keyStates[-btn] = false;
 
-            InputReader::HotkeyBinding* bestMatch = nullptr;
+            HotkeyBinding* bestMatch = nullptr;
             int bestScore = -1;
 
-            for (auto& binding : s_releaseBindings)
+            for (auto& binding : releaseBindings)
             {
-                if (binding.hotkey.bindType != BindType::Mouse)
+                if (binding.hotkey.bindType != BindType::Mouse) {
                     continue;
+                }
+                    
 
-                if (binding.hotkey.keyCode != btn)
+                if (binding.hotkey.keyCode != btn) {
                     continue;
+                }
+                    
 
-                if (!matchesModifiers(binding.hotkey.modifiers))
+                if (!matchesModifiers(binding.hotkey.modifiers)) {
                     continue;
+                }
+                    
 
                 int score = std::popcount(binding.hotkey.modifiers);
 
@@ -189,8 +206,10 @@ void InputReader::dispatch(uiohook_event* event) {
                 }
             }
 
-            if (bestMatch)  
+            if (bestMatch) {
                 bestMatch->callback();
+            }
+                
 
             break;
         }
@@ -225,24 +244,24 @@ void InputReader::stop()
 
 void InputReader::onHotkey(const Hotkey& hotkey, HotkeyCallback callback)
 {
-    s_bindings.push_back({ hotkey, std::move(callback) });
+    pressedBindings.push_back({ hotkey, std::move(callback) });
 }
 
 void InputReader::onHotkeyRelease(const Hotkey& hotkey, HotkeyCallback callback)
 {
-    s_releaseBindings.push_back({ hotkey, std::move(callback) });
+    releaseBindings.push_back({ hotkey, std::move(callback) });
 }
 
 void InputReader::clearHotkeys()
 {
-    s_bindings.clear();
-    s_releaseBindings.clear();
+    pressedBindings.clear();
+    releaseBindings.clear();
 }
                 
 
 bool InputReader::isKeyDown(int keycode)
 {
-    bool down = s_keyStates[keycode];
+    bool down = keyStates[keycode];
 
     return down;
 }
