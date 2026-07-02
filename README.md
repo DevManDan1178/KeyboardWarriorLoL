@@ -162,7 +162,7 @@ Please use this responsibly.
 
 ## Disclaimer
 
-I have tried reaching out to Riot Games by filing a support ticket in the `Discuss Personal Suspension or Restriction` section and asking if this application was allowed.
+I have reached out to Riot Games Support by filing a ticket in the `Discuss Personal Suspension or Restriction` section and asking if this application was allowed.
 
 Their response has neither stated it as being allowed nor stated it as being against terms of service. 
 
