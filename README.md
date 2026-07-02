@@ -3,7 +3,7 @@
 KeyboardWarriorLoL is a League of Legends companion application that allows players to send predefined chat messages using configurable hotkeys. 
 Messages can be triggered at any time or unlocked dynamically based on detected in-game events such as kills and the takedown of objectives and structures.
 
-The mod supports two types of messages:
+### Supporting two types of messages:
 
 * **Default Messages** — Always available and can be sent at any time.
 * **Event Messages** — Unlocked by specific in-game events and can only be sent after the corresponding event has been detected (for a limited duration).
@@ -136,9 +136,9 @@ Default Hotkey 1
 3. Test it in practice tool (get used to it).
 4. Have fun with it.
 
-*Do not modify the other files in the mod's folder.*
+*Do not modify the other files in the application's folder.*
 
-Please use this mod responsibly.
+Please use this responsibly.
 - Don't use this to spam the chat.
 - Treat people with respect.
 - Follow Riot Games' rules and community guidelines.
@@ -149,16 +149,20 @@ Please use this mod responsibly.
 - `Alt` and `CTRL` keys are not supported due to their implementation on the LoL client.
     - `Alt + Enter` will toggle fullscreen, so it can absolutely not be used with sending a message
     - `CTRL` will block opening the in-game chat with `Enter`
-- `Enter` key is not supported as it risks disrupting the mod's process of message sending.
-    - The mod sends in-game messages by inputting `Enter`, `Your Message` character by character, and `Enter`
+- `Enter` key is not supported as it risks disrupting the application's process of message sending.
+    - The application sends in-game messages by inputting `Enter`, `Your Message` character by character, and `Enter`
     - By pressing `Enter` before this, the chat is open then closed before the message is typed, then reopened
 - No `GameEnd` event on nexus destruction (rip).
     - Unfortunately, the client's API's `GameEnd` event fires after the victory screen, so it is basically useless.
     - Besides that, there are no reliable ways to detect a game ending.
+- Inability to distinguish between players with the same name.
+    - The LoL client API for fetching game events only provides events with the summoner name (without the tagline).
+    - The application might flag events happening to another player with the same name as happening to you.
+    - 
 
 ## Disclaimer
 
-I have tried reaching out to Riot Games by filing a support ticket in the `Discuss Personal Suspension or Restriction` section and asking if this mod was allowed.
+I have tried reaching out to Riot Games by filing a support ticket in the `Discuss Personal Suspension or Restriction` section and asking if this application was allowed.
 
 Their response has neither stated it as being allowed nor stated it as being against terms of service. 
 
