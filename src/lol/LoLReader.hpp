@@ -7,7 +7,7 @@
 #include <queue>
 #include "../external/json.hpp"
 #include "lol/LoLEventHandler.hpp"
-#include "LoLTypes.h"
+#include "lol/LoLTypes.hpp"
 
 const std::string ALL_GAME_DATA_QUERY_URL = "https://127.0.0.1:2999/liveclientdata/allgamedata";
 const std::string PLAYER_NAME_QUERY_URL = "https://127.0.0.1:2999/liveclientdata/activeplayername";

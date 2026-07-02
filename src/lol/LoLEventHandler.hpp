@@ -6,7 +6,7 @@
 #include <string>
 #include "unordered_map"
 #include <variant>
-#include "LoLTypes.h"
+#include "lol/LoLTypes.hpp"
 #include "lol/LoLChatSender.hpp"
 #include <functional>
 #include <queue>
