@@ -1,7 +1,7 @@
 #pragma once
 
-#include "HotkeyManager.h"
-#include "MessagesManager.h"
+#include "managers/HotkeyManager.hpp"
+#include "managers/MessagesManager.hpp"
 
 namespace MessagesUI {
     extern int categoryToggleStates;

@@ -1,6 +1,6 @@
 #include "ui/MessagesUI.h"
-#include "MessagesManager.h"
-#include "HotkeyManager.h"
+#include "managers/MessagesManager.hpp"
+#include "managers/HotkeyManager.hpp"
 #include <vector>
 #include <string>
 #include <format>

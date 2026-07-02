@@ -1,28 +1,33 @@
-#include "MessagesManager.h"
-#include "HotkeyManager.h"
 
-#include "ui/MessagesUI.h"
-#include "ui/HotkeysUI.h"
-#include "LoLReader.h"
-#include "CoreUI.h"
-#include <windows.h>
-#include "InputReader.h"
-
-#define SDL_MAIN_HANDLED
-#include <SDL.h>
-#include <SDL_opengl.h>
-#include <SDL_syswm.h>
-#include <uiohook.h>    
+#include "app.hpp" 
 #include <iostream>
 #include <bitset>
 #include <map>
 #include <string>
 #include <format>
+#include <windows.h>
+
+#include "managers/MessagesManager.hpp"
+#include "managers/HotkeyManager.hpp"
+
+#include "ui/MessagesUI.h"
+#include "ui/HotkeysUI.h"
+#include "lol/LoLReader.hpp"
+#include "CoreUI.h"
+#include "input/InputReader.hpp"
+
+#define SDL_MAIN_HANDLED
+#include <SDL.h>
+#include <SDL_opengl.h>
+#include <SDL_syswm.h>
+
+#include <uiohook.h>   
 
 //ImGui
 #include "imgui.h"
 #include "backends/imgui_impl_sdl2.h"
 #include "backends/imgui_impl_opengl3.h"
+
 
 void setClickThrough(HWND hwnd, bool clickThrough) {
     LONG_PTR exStyle = GetWindowLongPtr(hwnd, GWL_EXSTYLE);
@@ -42,7 +47,7 @@ void setBorderless(SDL_Window* window, HWND hwnd, bool borderless)
         SWP_NOMOVE | SWP_NOSIZE | SWP_NOZORDER | SWP_FRAMECHANGED);
 }
 
-int main() {
+int App::initialize() {
     if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS) != 0) {
         std::cout << "SDL Init failed: " << SDL_GetError() << std::endl;
         return -1;
@@ -111,7 +116,7 @@ int main() {
 
     std::function<void(std::string, std::string)> displayEventChange;
 
-    ChatSender chatSender = ChatSender();
+    LoLChatSender chatSender = LoLChatSender();
     LoLEventHandler lolEventHandler = LoLEventHandler(messages, hotkeyManager, chatSender, displayEventChange);
     LoLReader lolReader = LoLReader(lolEventHandler);
     
@@ -252,13 +257,4 @@ int main() {
     SDL_Quit();
     lolReader.closeLoop();
     return 0;
-}
-
-int WINAPI WinMain(
-    HINSTANCE hInstance,
-    HINSTANCE hPrevInstance,
-    LPSTR lpCmdLine,
-    int nCmdShow)
-{
-    return main();
 }

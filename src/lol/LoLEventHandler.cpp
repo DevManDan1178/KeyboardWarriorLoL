@@ -1,7 +1,7 @@
 #include "../external/json.hpp"
-#include "MessagesManager.h"
-#include "HotkeyManager.h"
-#include "lolEventHandler.h"
+#include "managers/MessagesManager.hpp"
+#include "managers/HotkeyManager.hpp"
+#include "lolEventHandler.hpp"
 #include <iostream>
 
 using json = nlohmann::json;
@@ -114,7 +114,7 @@ void LoLEventHandler::queueLoLEvent(std::string eventCategory, std::string event
 	}
 }
 
-LoLEventHandler::LoLEventHandler(MessagesManager& _messages, HotkeyManager& _hotkeyManager, ChatSender& _chatSender, std::function<void(std::string, std::string)> &_displayEventChange) 
+LoLEventHandler::LoLEventHandler(MessagesManager& _messages, HotkeyManager& _hotkeyManager, LoLChatSender& _chatSender, std::function<void(std::string, std::string)> &_displayEventChange) 
 	: messages(_messages), hotkeyManager(_hotkeyManager), chatSender(_chatSender), displayEventChange(_displayEventChange) {}
 
 

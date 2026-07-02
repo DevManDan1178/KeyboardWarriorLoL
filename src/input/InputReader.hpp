@@ -4,7 +4,7 @@
 #include <functional>
 #include <unordered_map>
 #include <vector>
-#include "HotkeyManager.h" 
+#include "managers/HotkeyManager.hpp" 
 
 using HotkeyCallback = std::function<void()>;
 
@@ -35,7 +35,7 @@ private:
         HotkeyCallback callback;
     };
 
-    static std::vector<HotkeyBinding>    s_bindings;
+    static std::vector<HotkeyBinding> s_bindings;
     static std::vector<InputReader::HotkeyBinding> s_releaseBindings;
     static std::unordered_map<int, bool> s_keyStates;
 

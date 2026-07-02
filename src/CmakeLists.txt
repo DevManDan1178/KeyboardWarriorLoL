@@ -1,14 +1,20 @@
 add_executable(KeyboardWarriorLoLMod
-    main.cpp
-    LoLReader.cpp
-    HotkeyManager.cpp
-    MessagesManager.cpp
-    LoLEventHandler.cpp
-    InputReader.cpp
-    ChatSender.cpp
+    core/main.cpp
+    core/app.cpp
+    
+    lol/LoLReader.cpp
+    lol/LoLChatSender.cpp
+    lol/LoLEventHandler.cpp
+    
+    managers/HotkeyManager.cpp
+    managers/MessagesManager.cpp
+    
+    input/InputReader.cpp
+
     ui/MessagesUI.cpp
     ui/HotkeysUI.cpp
     ui/CoreUI.cpp
+    
     helpers/HTTPHelper.cpp
 )
 

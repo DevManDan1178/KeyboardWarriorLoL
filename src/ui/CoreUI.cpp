@@ -10,9 +10,9 @@
 #include <SDL_opengl.h>
 #include <SDL_syswm.h>
 
-#include "MessagesManager.h"
-#include "HotkeyManager.h"
-#include "LoLEventHandler.h"
+#include "managers/MessagesManager.hpp"
+#include "managers/HotkeyManager.hpp"
+#include "lol/LoLEventHandler.hpp"
 
 const ImVec4 DEFAULT_TITLE_BAR_DRAG_COLOR = ImVec4(0.2f, 0.2f, 0.2f, 0.5f);
 const ImVec4 DRAGGABLE_TITLE_BAR_DRAG_COLOR = ImVec4(0.4f, 0.4f, 0.4f, 0.75f);
@@ -78,7 +78,6 @@ namespace CoreUI {
         );
 
         //drawTitleBar(window, hwnd, true, true); not borderless anymore, so already has the default one
-
         MessagesUI::messagesMenu(messages, hotkeyManager);
         ImGui::Dummy(ImVec2(0, 12));
         HotkeysUI::hotkeysUI(hotkeyManager);

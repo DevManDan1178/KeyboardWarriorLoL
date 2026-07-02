@@ -1,9 +1,7 @@
 #include "../external/json.hpp"
-#include "HotkeyManager.h"
-#include "ChatSender.h"
+#include "managers/HotkeyManager.hpp"
 #include <uiohook.h>
 #include <unordered_map>
-#include "HotkeyManager.h"
 #include <iostream>
 #include <filesystem>
 #include <fstream>
@@ -358,7 +356,7 @@ Hotkey HotkeyManager::queryHotkey()
 
                 uint8_t mods = 0;
                 SDL_Keymod sdlMods = SDL_GetModState();
-
+                
                 //if (sdlMods & KMOD_CTRL)  mods |= Modifiers::Ctrl;
                 if (sdlMods & KMOD_SHIFT){
                     mods |= Modifiers::Shift;

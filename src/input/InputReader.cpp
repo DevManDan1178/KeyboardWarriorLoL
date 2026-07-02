@@ -1,8 +1,9 @@
-#include "InputReader.h"
+#include "input/InputReader.hpp"
 #include <iostream>
 #include <thread>
 #include <bit>
 #include <windows.h>
+
 
 // uiohook raw keycodes for modifier keys
 #define KEY_LEFT_CTRL   0x001D
@@ -25,7 +26,7 @@ bool InputReader::s_alt   = false;
 // Modifiers
 
 static bool isModifierKey(int keycode)
-{
+{   
     return keycode == KEY_LEFT_CTRL   || keycode == KEY_RIGHT_CTRL ||
            keycode == KEY_LEFT_SHIFT  || keycode == KEY_RIGHT_SHIFT ||
            keycode == KEY_LEFT_ALT    || keycode == KEY_RIGHT_ALT;
