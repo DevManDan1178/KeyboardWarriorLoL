@@ -1,12 +1,18 @@
 # KeyboardWarriorLoL
 
 KeyboardWarriorLoL is a League of Legends companion application that allows players to send predefined chat messages using configurable hotkeys. 
-Messages can be triggered at any time or unlocked dynamically based on detected in-game events such as kills and the takedown of objectives and structures.
+
 
 ### Supporting two types of messages:
 
 * **Default Messages** — Always available and can be sent at any time.
-* **Event Messages** — Unlocked by specific in-game events and can only be sent after the corresponding event has been detected (for a limited duration).
+* **Event Messages** — Temporarily available after the detection of specific in-game events (different messages configurable per event).
+
+<br>
+
+*Wait... isn't this just a chat macro?*
+
+*Well yes, but integrated into LoL so it's a bajillion times cooler and a lot easier to use and stuff!*
 
 ## How to Setup
 - Click on `Releases`
@@ -17,11 +23,11 @@ Messages can be triggered at any time or unlocked dynamically based on detected 
 
 ## Features
 
-* Configure hotkeys for commonly used chat messages.
-* Send messages quick without typing.
-* Event-aware messaging system.
+* Configurable hotkeys for preset chat messages.
+* Sending messages quick without typing.
+* In-game Event-aware messaging system.
 * Custom titles for every message slot.
-* Support for multiple event-triggered message slots.
+* Support for any amount of message and hotkey slots.
 * Lightweight and easy to configure.
 
 ## Message Types
@@ -40,11 +46,11 @@ Pressing the assigned hotkey immediately sends the configured message.
 
 ### Event Messages
 
-Event messages are tied to game events and are identified by an index.
+Event messages are tied to specific game events.
 
-An event message becomes available only after its associated event has occurred. 
+An event's messages become available temporarily after the event occurs in game. 
 
-Once available, pressing the assigned hotkey sends the configured message.
+When available, pressing the corresponding hotkey sends the configured message.
 
 Supported events include:
 
@@ -52,7 +58,7 @@ Supported events include:
   - Game Start
     
 - Kills
-  - First Blood 
+  - First Blood
   - Assisted Kill
   - Solo Kill
   - Double Kill
