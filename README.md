@@ -83,7 +83,7 @@ Supported events include:
 #### Some Information About How Events Work
 - Events are stored in a queue, where the current event can be skipped in favor of the next one
 
-- **Kill events** (excluding First Blood, Ace and Death) will automatically be placed first in the queue (erasing all previous events).
+- **Kill events** (excluding `Ace` and `Death`) will automatically be placed first in the queue (erasing all previous events).
   - Kill streak events will automatically update to the most recent streak. (Ex: getting a triple kill will automatically set the current event to `Triple Kill`)
   - Getting a kill with an event already active will set the kill as the active event instead of placing it after
 
