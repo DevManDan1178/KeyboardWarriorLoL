@@ -12,7 +12,7 @@ KeyboardWarriorLoL is a League of Legends companion application that allows play
 
 *Wait... isn't this just a chat macro?*
 
-*Well yes, but integrated into LoL so it's like a bajillion times cooler and easier to use and stuff!*
+*Well yes, but specifically for LoL so it's like a bajillion times cooler and easier to use and stuff!*
 
 ## How to Setup
 - Click on `Releases`
