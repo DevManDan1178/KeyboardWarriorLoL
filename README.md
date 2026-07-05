@@ -143,6 +143,18 @@ Please use this responsibly.
 - Treat people with respect.
 - Follow Riot Games' rules and community guidelines.
 
+## Screenshots
+### Configuration UI Snippet
+<img width="305" height="320" alt="image" src="https://github.com/user-attachments/assets/76601b06-8bf4-49d8-9756-00d95c2cfde8" />
+
+
+### Overlay UI
+<img width="414" height="140" alt="image" src="https://github.com/user-attachments/assets/2bb60662-a19a-439a-9d51-7ec34469b67a" />
+
+
+### Sending Message
+<img width="250" height="25" alt="image" src="https://github.com/user-attachments/assets/9c9f1f24-9ded-4fcd-888f-ff866e3cac4a" />
+
 
 ## Limitations
 
