@@ -178,6 +178,42 @@ Please use this responsibly.
     - The application might flag events happening to another player with the same name as happening to you.
     - 
 
+## Event Conditions
+
+`Credit` - Only fires if the credit is yours
+
+`Contribution` - Fires if the credit is yours or if you assisted
+
+`Same Team` - Fires if you are on the scoring team
+
+`Automatic` - No special conditions
+
+- Game State
+  - Game Start - `Automatic`
+    
+- Kills
+  - First Blood - `Credit`
+  - Assisted Kill - `Credit`
+  - Solo Kill - `Credit`
+  - Double Kill - `Credit`
+  - Triple Kill - `Credit`
+  - Quadra Kill - `Credit`
+  - Pentakill - `Credit`
+  - Ace - `Same Team`
+  - Death - `Credit`
+    
+- Objectives 
+  - Dragon - `Contribution`
+  - Baron - `Contribution`
+  - Rift Herald - `Contribution`
+  - Void Grubs - `Contribution`
+  - Atakhan - `Contribution`
+    
+- Structures
+  - First Turret - `Credit`
+  - Turret - `Contribution`
+  - Inhibitor - `Contribution`
+
 ## Disclaimer
 
 I have reached out to Riot Games Support by filing a ticket in the `Discuss Personal Suspension or Restriction` section and asking if this application was allowed.
