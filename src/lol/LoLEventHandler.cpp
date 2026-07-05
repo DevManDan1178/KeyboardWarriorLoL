@@ -260,7 +260,7 @@ void LoLEventHandler::processLoLEvent(json lolEvent) {
 		return;
 	}
 	if (eventName == "TurretKilled") {
-		if (!(isKiller())) {
+		if (!(isKiller() || isAmongAssisters())) {
 			return;
 		}
 		queueLoLEvent("Structures", "Turret");
