@@ -12,7 +12,7 @@ KeyboardWarriorLoL is a League of Legends companion application that allows play
 
 *Wait... isn't this just a chat macro?*
 
-*Well yes, but integrated into LoL so it's a bajillion times cooler and a lot easier to use and stuff!*
+*Well yes, but integrated into LoL so it's like a bajillion times cooler and easier to use and stuff!*
 
 ## How to Setup
 - Click on `Releases`
@@ -91,9 +91,9 @@ Supported events include:
 
 
 ### In-Game Workflow
-The In-Game Overlay UI can be toggled between showing only on events or always showing.
+The In-game Overlay UI can be toggled between showing only on events or always showing.
 
-When an event is detected, the overlay UI will show the current event, the hotkeys with the corresponding messages (by title), and a pending next event (if there is one).
+When an event is detected, the overlay UI will show the current event, the messages and corresponding hotkeys, the pending next event (if there is one), and a progress bar indicating the time left for the event.
 
 Pressing a hotkey will type the message in the chat. 
 
@@ -103,10 +103,9 @@ Pressing a hotkey will type the message in the chat.
 
 Each message slot includes a customizable title.
 
-Titles are used only within KeyboardWarriorLoL to help identify messages when configuring or viewing hotkey assignments. They do not affect the text sent to in-game chat.
+Titles are used only within KeyboardWarriorLoL to help identify messages when configuring or viewing hotkey assignments. They do not affect the text sent to the in-game chat.
 
-
-This allows players to quickly distinguish between message slots without needing to read the full chat message when properly configured.
+This allows players to quickly distinguish between and remember their preset messages.
 
 ## Configuration
 
@@ -142,7 +141,7 @@ Default Hotkey 1
 3. Test it in practice tool (get used to it).
 4. Have fun with it.
 
-*Do not modify the other files in the application's folder.*
+*Do not modify any files in the application's folder.*
 
 Please use this responsibly.
 - Don't use this to spam the chat.
@@ -160,23 +159,6 @@ Please use this responsibly.
 
 ### In-game Example: Sending Message
 <img width="250" height="25" alt="image" src="https://github.com/user-attachments/assets/9c9f1f24-9ded-4fcd-888f-ff866e3cac4a" />
-
-
-## Limitations
-
-- `Alt` and `CTRL` keys are not supported due to their implementation on the LoL client.
-    - `Alt + Enter` will toggle fullscreen, so it can absolutely not be used with sending a message
-    - `CTRL` will block opening the in-game chat with `Enter`
-- `Enter` key is not supported as it risks disrupting the application's process of message sending.
-    - The application sends in-game messages by inputting `Enter`, `Your Message` character by character, and `Enter`
-    - By pressing `Enter` before this, the chat is open then closed before the message is typed, then reopened
-- No `GameEnd` event on nexus destruction (rip).
-    - Unfortunately, the client's API's `GameEnd` event fires after the victory screen, so it is basically useless.
-    - Besides that, there are no reliable ways to detect a game ending.
-- Inability to distinguish between players with the same name.
-    - The LoL client API for fetching game events only provides events with the summoner name (without the tagline).
-    - The application might flag events happening to another player with the same name as happening to you.
-    - 
 
 ## Event Conditions
 
@@ -214,7 +196,26 @@ Please use this responsibly.
   - Turret - `Contribution`
   - Inhibitor - `Contribution`
 
-## Disclaimer
+
+
+## Limitations
+
+- `Alt` and `CTRL` keys are not supported due to their implementation on the LoL client.
+    - `Alt + Enter` will toggle fullscreen, so it can absolutely not be used with sending a message
+    - `CTRL` will block opening the in-game chat with `Enter`
+- `Enter` key is not supported as it risks disrupting the application's process of message sending.
+    - The application sends in-game messages by inputting `Enter`, `Your Message` character by character, and `Enter`
+    - By pressing `Enter` before this, the chat is open then closed before the message is typed, then reopened
+- No `GameEnd` event on nexus destruction (rip).
+    - Unfortunately, the client's API's `GameEnd` event fires after the victory screen, so it is basically useless.
+    - Besides that, there are no reliable ways to detect a game ending.
+- Inability to distinguish between players with the same name.
+    - The LoL client API for fetching game events only provides events with the summoner name (without the tagline).
+    - The application might flag events happening to another player with the same name as happening to you.
+
+
+
+## Disclaimer !
 
 I have reached out to Riot Games Support by filing a ticket in the `Discuss Personal Suspension or Restriction` section and asking if this application was allowed.
 
