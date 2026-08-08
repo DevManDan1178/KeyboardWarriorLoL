@@ -1,7 +1,8 @@
 # KeyboardWarriorLoL
 
-KeyboardWarriorLoL is a League of Legends companion application that allows players to send predefined chat messages using configurable hotkeys. 
+KeyboardWarriorLoL is a real-time League of Legends companion application that detects in-game events and makes context-aware chat macros available through configurable global hotkeys.
 
+The application combines a polling-based event processing architecture, real-time game-state integration, configurable input handling, UI overlays, and persistent user configuration into a lightweight desktop application.
 
 ### Supporting two types of messages:
 
@@ -52,33 +53,42 @@ An event's messages become available temporarily after the event occurs in game.
 
 When available, pressing the corresponding hotkey sends the configured message.
 
-Supported events include:
+## Events and Event Conditions
+
+`Credit` - Only fires if the credit is yours
+
+`Contribution` - Fires if the credit is yours or if you assisted
+
+`Same Team` - Fires if you are on the scoring team
+
+`Automatic` - No special conditions
 
 - Game State
-  - Game Start
+  - Game Start - `Automatic`
     
 - Kills
-  - First Blood
-  - Assisted Kill
-  - Solo Kill
-  - Double Kill
-  - Triple Kill
-  - Quadra Kill
-  - Pentakill
-  - Ace
-  - Death
+  - First Blood - `Credit`
+  - Assisted Kill - `Credit`
+  - Solo Kill - `Credit`
+  - Double Kill - `Credit`
+  - Triple Kill - `Credit`
+  - Quadra Kill - `Credit`
+  - Pentakill - `Credit`
+  - Ace - `Same Team`
+  - Death - `Credit`
     
-- Objectives
-  - Dragon
-  - Baron
-  - Rift Herald
-  - Void Grubs
-  - Atakhan
+- Objectives 
+  - Dragon - `Contribution`
+  - Baron - `Contribution`
+  - Rift Herald - `Contribution`
+  - Void Grubs - `Contribution`
+  - Atakhan - `Contribution`
     
 - Structures
-  - First Turret
-  - Turret
-  - Inhibitor
+  - First Turret - `Credit`
+  - Turret - `Contribution`
+  - Inhibitor - `Contribution`
+
 
 #### Some Information About How Events Work
 - Events are stored in a queue, where the current event can be skipped in favor of the next one
@@ -160,43 +170,133 @@ Please use this responsibly.
 ### In-game Example: Sending Message
 <img width="250" height="25" alt="image" src="https://github.com/user-attachments/assets/9c9f1f24-9ded-4fcd-888f-ff866e3cac4a" />
 
-## Event Conditions
 
-`Credit` - Only fires if the credit is yours
+## Disclaimer !
 
-`Contribution` - Fires if the credit is yours or if you assisted
+I have reached out to Riot Games Support by filing a ticket in the `Discuss Personal Suspension or Restriction` section and asking if this application was allowed.
 
-`Same Team` - Fires if you are on the scoring team
+Their response has neither stated it as being allowed nor stated it as being against terms of service. 
 
-`Automatic` - No special conditions
+You should be fine as long as you use it responsibly *(use at your own risk)*.
 
-- Game State
-  - Game Start - `Automatic`
-    
-- Kills
-  - First Blood - `Credit`
-  - Assisted Kill - `Credit`
-  - Solo Kill - `Credit`
-  - Double Kill - `Credit`
-  - Triple Kill - `Credit`
-  - Quadra Kill - `Credit`
-  - Pentakill - `Credit`
-  - Ace - `Same Team`
-  - Death - `Credit`
-    
-- Objectives 
-  - Dragon - `Contribution`
-  - Baron - `Contribution`
-  - Rift Herald - `Contribution`
-  - Void Grubs - `Contribution`
-  - Atakhan - `Contribution`
-    
-- Structures
-  - First Turret - `Credit`
-  - Turret - `Contribution`
-  - Inhibitor - `Contribution`
+*KeyboardWarriorLoL is an unofficial third-party tool and is not affiliated with or endorsed by Riot Games. Use of third-party software may violate Riot Games policies or Terms of Service. Users assume all risk associated with using this software, including potential account penalties.*
 
+# Technical Overview
+## How It Works
+KeyboardWarriorLoL uses a polling-based event-driven workflow to monitor the League of Legends client and process new game events.
 
+A dedicated worker thread continuously checks the state of the League client and adjusts its polling frequency depending on the current state:
+
+- **Not in game** - The client is checked every 2 seconds.
+- **Loading screen** - The client is checked every 500 ms.
+- **In game** - Game events are polled every 100 ms.
+
+Once the application detects that a game is active, it retrieves the current player and team information and begins polling the Live Client Data API for new events.
+
+```
+League Client
+     |
+     v
+Check Client State
+     |
+     +-- Not in game
+     |      |
+     |      +-- Check every 2 seconds
+     |
+     +-- Loading
+     |      |
+     |      +-- Check every 500 ms
+     |
+     +-- In game
+            |
+            +-- Get player/team information
+            |
+            +-- Poll events every 100 ms
+                    |
+                    v
+              New Game Events
+                    |
+                    v
+              Event Handler
+                    |
+                    +-- Validate event
+                    +-- Determine player involvement
+                    +-- Convert to application event
+                    +-- Add to event queue
+                    |
+                    v
+              Active Event
+                    |
+                    +-- Overlay
+                    +-- Hotkeys
+                    +-- Expiration
+```
+
+### Event Polling
+The Live Client Data API provides an event list along with an `EventID` for each event.
+KeyboardWarriorLoL keeps track of the most recently processed event ID and requests events starting from that ID. 
+Each returned event is then checked against the current ID before being processed, preventing the same event from being handled multiple times.
+
+This allows the application to continuously poll the API without requiring a persistent event subscription.
+
+### Event Processing
+Raw League events are passed to `LoLEventHandler`, which determines whether the event is relevant to the local player and converts it into one of KeyboardWarriorLoL's application events.
+
+For example:
+
+- A `ChampionKill` event can become `Death`, `Solo Kill`, or `Assisted Kill`.
+- A `Multikill` event can become `Double Kill`, `Triple Kill`, `Quadra Kill`, or `Pentakill`.
+- Objective events such as `DragonKill` are only processed when the local player received credit or assisted.
+- Team-based events such as `Ace` are checked against the local player's team.
+
+Events that do not have configured messages are ignored.
+
+### Event Queue
+Once an event passes its conditions, it is added to the event queue.
+
+Normal events are appended to the queue. 
+Higher-priority events, such as kills and kill streaks, can instead replace the existing queue and become the active event immediately.
+
+The event handler tracks the start time of the current event and periodically checks whether it has expired. 
+When an event expires, it is removed from the front of the queue and the next pending event becomes active.
+
+This separates the process of detecting game events from deciding which event should currently be presented to the user.
+
+```
+League API
+    |
+    v
+Poll for new events
+    |
+    v
+Validate EventID
+    |
+    v
+Process raw event
+    |
+    v
+Check player/team involvement
+    |
+    v
+Convert to application event
+    |
+    v
+Add to event queue
+    |
+    +----------------------+
+    |                      |
+    v                      v
+Current Event         Pending Events
+    |
+    v
+Overlay + Hotkeys
+    |
+    v
+Event Expires
+    |
+    v
+Next Event
+```
 
 ## Limitations
 
@@ -209,19 +309,10 @@ Please use this responsibly.
 - No `GameEnd` event on nexus destruction (rip).
     - Unfortunately, the client's API's `GameEnd` event fires after the victory screen, so it is basically useless.
     - Besides that, there are no reliable ways to detect a game ending.
-- Inability to distinguish between players with the same name.
+- Players with the same name cannot be distinguished.
     - The LoL client API for fetching game events only provides events with the summoner name (without the tagline).
-    - The application might flag events happening to another player with the same name as happening to you.
+    - The application might attribute events belonging to another player with the same name to the local player.
 
 
 
-## Disclaimer !
-
-I have reached out to Riot Games Support by filing a ticket in the `Discuss Personal Suspension or Restriction` section and asking if this application was allowed.
-
-Their response has neither stated it as being allowed nor stated it as being against terms of service. 
-
-You should be fine as long as you use it responsibly *(use at your own risk)*.
-
-*KeyboardWarriorLoL is an unofficial third-party tool and is not affiliated with or endorsed by Riot Games. Use of third-party software may violate Riot Games policies or Terms of Service. Users assume all risk associated with using this software, including potential account penalties.*
 
