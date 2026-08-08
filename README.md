@@ -26,9 +26,9 @@ The application combines a polling-based event processing architecture, real-tim
 
 * Configurable hotkeys for preset chat messages.
 * Sending messages quick without typing.
-* In-game Event-aware messaging system.
+* In-game event-aware messaging system.
 * Custom titles for every message slot.
-* Support for any amount of message and hotkey slots.
+* Support for any amount of messages and hotkeys.
 * Lightweight and easy to configure.
 
 ## Message Types
@@ -101,6 +101,8 @@ Events can only be skipped, not returned to, so every event before the current e
 \**In the case of a game disconnection. Rejoining the game will trigger every past game event sequentially.*\*
 
 ### In-Game Workflow
+[In-game Overlay UI Screenshot](#in-game-overlay-ui)
+
 The In-game Overlay UI can be toggled between showing only on events or always showing.
 
 When an event is detected, the overlay UI will show the current event, the messages and corresponding hotkeys, the pending next event (if there is one), and a progress bar indicating the time left for the event.
