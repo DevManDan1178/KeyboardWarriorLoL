@@ -298,6 +298,20 @@ Event Expires
 Next Event
 ```
 
+## Tech Stack
+
+- **Language:** C++20
+- **Build System:** CMake
+- **UI:** Dear ImGui
+- **Windowing / Input Integration:** SDL2
+- **Global Input:** libuiohook
+- **Graphics:** OpenGL
+- **Game Integration:** League of Legends Live Client Data API
+- **Configuration:** JSON
+- **HTTP:** cpp-httplib / libcurl
+
+The project is built as a native Windows desktop application using C++20 and CMake.
+
 ## Limitations
 
 - `Alt` and `CTRL` keys are not supported due to their implementation on the LoL client.
@@ -313,6 +327,115 @@ Next Event
     - The LoL client API for fetching game events only provides events with the summoner name (without the tagline).
     - The application might attribute events belonging to another player with the same name to the local player.
 
+## Architecture
+The source code is separated into several components based on responsibility:
 
+```text
+src/
+├── core/
+│   └── Application lifecycle and entry point
+│
+├── lol/
+│   ├── League client/game-state integration
+│   ├── Event processing
+│   └── Chat message sending
+│
+├── input/
+│   ├── Global input handling
+│   └── Hotkey conversion
+│
+├── managers/
+│   ├── Hotkey management
+│   └── Message management
+│
+├── ui/
+│   ├── Configuration UI
+│   ├── Hotkey UI
+│   └── Core/overlay UI
+│
+└── helpers/
+    └── Shared utilities and HTTP functionality
+```
 
+The main responsibilities are separated so that game integration, event processing, input handling, configuration, and presentation do not need to be implemented in a single component.
+
+For example, `LoLReader` is responsible for communicating with the League client, while `LoLEventHandler` interprets the returned game events. `LoLChatSender` handles sending messages, while the input and manager components handle configurable hotkeys and messages.
+
+This separation also makes the event-processing logic independent from the UI that displays the resulting event.
+
+## Engineering Challenges
+### Polling a Real-Time Game Client
+The League client does not provide the application with a persistent event subscription for the events it needs.
+
+KeyboardWarriorLoL therefore uses a dedicated worker thread to continuously poll the client.
+
+The polling interval changes depending on the current game state:
+
+- **Not in game:** 2 seconds
+- **Loading:** 500 ms
+- **In game:** 100 ms
+
+This reduces unnecessary requests when the application is idle while still providing responsive event detection during gameplay.
+
+### Preventing Duplicate Events
+The Live Client Data API provides an ID for each game event.
+
+The application keeps track of the most recently processed event ID and only processes events that have not already been handled.
+
+This allows the application to continuously poll the event endpoint without processing the same game event multiple times.
+
+### Interpreting Raw Game Events
+The events returned by the League client do not always directly correspond to the events shown to the user.
+
+For example, a raw `ChampionKill` event must be interpreted to determine whether it represents:
+
+- A death
+- A solo kill
+- An assisted kill
+
+Similarly, multikill events need to be converted into the appropriate application event such as `Double Kill`, `Triple Kill`, `Quadra Kill`, or `Pentakill`.
+
+The event handler also checks whether the local player received credit, contributed to the event, or belongs to the relevant team before creating an application event.
+
+### Managing Simultaneous Events
+Multiple game events can occur while another event is already being displayed.
+
+The event queue allows the application to preserve pending events while giving higher-priority events control of the active state.
+
+Kill events are given priority because they are time-sensitive and can change rapidly as a kill streak progresses.
+
+For example, a `Double Kill` followed by a `Triple Kill` should not result in both events being displayed independently. The active kill streak is updated to the most recent streak.
+
+### Real-Time Input
+Sending a message requires interacting with the League of Legends chat through simulated keyboard input.
+
+The application therefore needs to coordinate global hotkey detection with the sequence used to open the chat, type the message, and submit it.
+
+This introduces restrictions around keys such as `Enter`, `CTRL`, and `Alt`, which are documented in the limitations section.
+
+## Design Decisions
+### Polling Instead of a Persistent Event Subscription
+The application uses polling because the required League client events are exposed through the Live Client Data API as an event list.
+
+Event IDs are used to keep track of which events have already been processed.
+
+### Adaptive Polling
+The application does not need to poll the League client at the same rate at all times.
+
+Polling is intentionally slower when the user is not playing and becomes more frequent during loading and active gameplay.
+
+This keeps the application lightweight while maintaining responsive event detection.
+
+### Queue-Based Event Handling
+Events are placed into a queue instead of simply replacing the current event.
+
+This allows events that occur close together to be preserved while still supporting priority rules for time-sensitive events such as kills and kill streaks.
+
+### Separate Event Detection from Presentation
+
+The League client integration and event processing do not directly control how an event is displayed.
+
+An event is first detected and converted into an application-level event before being consumed by the UI and hotkey systems.
+
+This keeps the event-processing logic separate from the presentation layer.
 
