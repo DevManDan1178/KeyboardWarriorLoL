@@ -6,6 +6,7 @@ The application combines a polling-based event processing architecture, real-tim
 
 [See example screenshots](#screenshots)
 
+[Shoot my troubles](#troubleshooting)
 ### Supporting two types of messages:
 
 * **Default Messages** — Always available and can be sent at any time.
@@ -17,15 +18,16 @@ The application combines a polling-based event processing architecture, real-tim
 
 *Well yes, but specifically for LoL so it's like a bajillion times cooler and easier to use and stuff!*
 
-## How to Setup
+## Quick start
 - Click on `Releases`
-- Download a release (ZIP)
-- Unzip it somewhere you can remember
-- Launch the application by clicking on the `KeyboardWarriorLoL.exe` file in the unzipped folder
+- Download a release (ZIP) and exctract it
+- Launch `KeyboardWarriorLoL.exe`
   - If it is blocked by windows defender, you will have to allow it to run
+- Start League of Legends
+- Configure your messages and hotkeys
+- Test it in Practice Tool
 
 ## Features
-
 * Configurable hotkeys for preset chat messages.
 * Sending messages quick without typing.
 * In-game event-aware messaging system.
@@ -166,6 +168,25 @@ Please use this responsibly.
 ### In-game Example: Sending Message
 <img width="500" height="50" alt="image" src="https://github.com/user-attachments/assets/9c9f1f24-9ded-4fcd-888f-ff866e3cac4a" />
 
+## Troubleshooting
+### Windows Defender blocks the application!
+Windows may display a warning because the application is not distributed through the Microsoft Store or signed with a widely recognized publisher certificate. 
+You will have to manually allow it to run.
+Only run the application if you downloaded it from the project's official release page.
+
+### Messages are not sending!
+Make sure the League chat is closed before pressing the configured hotkey. [See in-game workflow](#in-game-workflow).
+
+### Hotkey are not working!
+`Enter`, `CTRL`, and `Alt` have restrictions due to how League handles chat input. [See limitations](#limitations).
+
+### I changed the /config folder and it doesnt work anymore!
+If the config folder under the app has been deleted or its files manually changed, the app may fail to parse it correctly.
+If you cannot recover a past working version, copy the default one from the [repository files](https://github.com/DevManDan1178/KeyboardWarriorLoL/tree/main/config).
+
+### Events aren't being detected!
+Make sure League is running and the application was started alongside the game. 
+Test event detection in Practice Tool first.
 
 ## Disclaimer !
 
