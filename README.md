@@ -1,6 +1,6 @@
 # KeyboardWarriorLoL
 
-KeyboardWarriorLoL is a real-time League of Legends companion application that detects in-game events and makes context-aware chat macros available through configurable global hotkeys.
+KeyboardWarriorLoL is a real-time League of Legends companion application for Windows that detects in-game events and makes context-aware chat macros available through configurable global hotkeys.
 
 The application combines a polling-based event processing architecture, real-time game-state integration, configurable input handling, UI overlays, and persistent user configuration into a lightweight desktop application.
 
@@ -54,68 +54,62 @@ An event's messages become available temporarily after the event occurs in game.
 When available, pressing the corresponding hotkey sends the configured message.
 
 ## Events and Event Conditions
-
-`Credit` - Only fires if the credit is yours
-
-`Contribution` - Fires if the credit is yours or if you assisted
-
-`Same Team` - Fires if you are on the scoring team
-
-`Automatic` - No special conditions
-
-- Game State
-  - Game Start - `Automatic`
-    
-- Kills
-  - First Blood - `Credit`
-  - Assisted Kill - `Credit`
-  - Solo Kill - `Credit`
-  - Double Kill - `Credit`
-  - Triple Kill - `Credit`
-  - Quadra Kill - `Credit`
-  - Pentakill - `Credit`
-  - Ace - `Same Team`
-  - Death - `Credit`
-    
-- Objectives 
-  - Dragon - `Contribution`
-  - Baron - `Contribution`
-  - Rift Herald - `Contribution`
-  - Void Grubs - `Contribution`
-  - Atakhan - `Contribution`
-    
-- Structures
-  - First Turret - `Credit`
-  - Turret - `Contribution`
-  - Inhibitor - `Contribution`
+### Event Conditions
+| Condition | Description |
+|---|---|
+| `Credit` | Only fires if the credit is yours |
+| `Contribution` | Fires if the credit is yours or if you assisted |
+| `Same Team` | Fires if you are on the scoring team |
+| `Automatic` | No special conditions |
 
 
-#### Some Information About How Events Work
-- Events are stored in a queue, where the current event can be skipped in favor of the next one
+### Events
+| Event | Condition | Category |
+|---|---|---|
+| Game Start | `Automatic` | Game State |
+| First Blood | `Credit` | Kills |
+| Assisted Kill | `Credit` | Kills |
+| Solo Kill | `Credit` | Kills |
+| Double Kill | `Credit` | Kills |
+| Triple Kill | `Credit` | Kills |
+| Quadra Kill | `Credit` | Kills |
+| Pentakill | `Credit` | Kills |
+| Ace | `Same Team` | Kills |
+| Death | `Credit` | Kills |
+| Dragon | `Contribution` | Objectives |
+| Baron | `Contribution` | Objectives |
+| Rift Herald | `Contribution` | Objectives |
+| Void Grubs | `Contribution` | Objectives |
+| Atakhan | `Contribution` | Objectives |
+| First Turret | `Credit` | Structures |
+| Turret | `Contribution` | Structures |
+| Inhibitor | `Contribution` | Structures |
 
-- **Kill events** (excluding `Ace` and `Death`) will automatically be placed first in the queue (erasing all previous events).
-  - Kill streak events will automatically update to the most recent streak. (Ex: getting a triple kill will automatically set the current event to `Triple Kill`)
-  - Getting a kill with an event already active will set the kill as the active event instead of placing it after
 
-- The **Quadra Kill** event expires after 30 seconds (the maximum possible amount of time before the timer for a pentakill expires)
 
+### Handling Simultaneous Events
+Only one current event can be active. In the case of multiple simultaneous events, the current event can be skipped in favor of the next one.
+
+**Kill events** (excluding `Ace` and `Death`) will automatically become the new current event (erasing all previous events).
+  - Kill streak events will automatically update to the most recent streak. (Ex: getting a triple kill will automatically set it as the current event)
+  - Getting a kill with an event already active will set the kill as the current event.
+Events expire automatically (with a progress bar indicating their lifespan), and their expiration duration can be set in the configuration.
+  - As an exception, the **Quadra Kill** event always expires after 30 seconds (the maximum possible amount of time before the timer for a pentakill expires).
+
+Events can only be skipped, not returned to, so every event before the current event is lost.
+
+\**In the case of a game disconnection. Rejoining the game will trigger every past game event sequentially.*\*
 
 ### In-Game Workflow
 The In-game Overlay UI can be toggled between showing only on events or always showing.
 
 When an event is detected, the overlay UI will show the current event, the messages and corresponding hotkeys, the pending next event (if there is one), and a progress bar indicating the time left for the event.
 
+By default, the overlay UI will show the list of default messages and their corresponding hotkeys.
+
 Pressing a hotkey will type the message in the chat. 
 
 \***The message is only properly typed if the chat is initially closed**\*
-
-## Message Titles
-
-Each message slot includes a customizable title.
-
-Titles are used only within KeyboardWarriorLoL to help identify messages when configuring or viewing hotkey assignments. They do not affect the text sent to the in-game chat.
-
-This allows players to quickly distinguish between and remember their preset messages.
 
 ## Configuration
 
@@ -241,6 +235,11 @@ This allows the application to continuously poll the API without requiring a per
 
 ### Event Processing
 Raw League events are passed to `LoLEventHandler`, which determines whether the event is relevant to the local player and converts it into one of KeyboardWarriorLoL's application events.
+
+Events are handled based on the event data provided by the League client rather than being restricted to a specific game mode. 
+This allows events that are shared between game modes, such as kills and deaths, to work wherever the League client reports them.
+
+Events that are specific to a particular mode, such as Dragon or Baron kills, naturally only become available when that event can occur in the current game.
 
 For example:
 
@@ -439,3 +438,7 @@ An event is first detected and converted into an application-level event before 
 
 This keeps the event-processing logic separate from the presentation layer.
 
+## Testing
+The application has primarily been tested through League of Legends Practice Tool and real game sessions.
+
+Testing focuses on game-state transitions, event detection, event attribution, event queue behavior, hotkey input, and message sending.
