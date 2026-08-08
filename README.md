@@ -4,9 +4,9 @@ KeyboardWarriorLoL is a real-time League of Legends companion application for Wi
 
 The application combines a polling-based event processing architecture, real-time game-state integration, configurable input handling, UI overlays, and persistent user configuration into a lightweight desktop application.
 
-[See example screenshots](#screenshots)
+[See example screenshots](#screenshots)   ·   [Troubleshooting](#troubleshooting)
 
-[Shoot my troubles](#troubleshooting)
+
 ### Supporting two types of messages:
 
 * **Default Messages** — Always available and can be sent at any time.
@@ -19,13 +19,13 @@ The application combines a polling-based event processing architecture, real-tim
 *Well yes, but specifically for LoL so it's like a bajillion times cooler and easier to use and stuff!*
 
 ## Quick start
-- Click on `Releases`
-- Download a release (ZIP) and exctract it
-- Launch `KeyboardWarriorLoL.exe`
-  - If it is blocked by windows defender, you will have to allow it to run
-- Start League of Legends
-- Configure your messages and hotkeys
-- Test it in Practice Tool
+1. Click on `Releases`
+2. Download a release (ZIP) and extract it
+3. Launch `KeyboardWarriorLoL.exe`
+  - If it is blocked by Windows Defender, you will have to allow it to run
+4. Start League of Legends
+5. Configure your messages and hotkeys
+6. Test it in Practice Tool
 
 ## Features
 * Configurable hotkeys for preset chat messages.
