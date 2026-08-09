@@ -27,12 +27,12 @@ The application combines a polling-based event processing architecture, real-tim
 5. Test it in Practice Tool
 
 ## Features
-* Configurable hotkeys for preset chat messages.
-* Sending messages quick without typing.
-* In-game event-aware messaging system.
-* Custom titles for every message slot.
-* Support for any amount of messages and hotkeys.
-* Lightweight and easy to configure.
+* Configurable hotkeys for preset chat messages
+* Sending messages quick without typing
+* In-game event-aware messaging system
+* Custom titles for every message slot
+* Support for any amount of messages and hotkeys
+* Lightweight and easy to configure
 
 ## Message Types
 
@@ -142,11 +142,11 @@ Default Hotkey 1
 ```
 
 ## Usage
-0. (Optional) Create a shortcut for the KeyboardWarriorLoL.exe executable in the installed folder.
-1. Launch League of Legends alongside KeyboardWarriorLoL (KeyboardWarriorLoL.exe).
-2. Configure your message titles, messages, hotkeys, and mod configurations (if needed).
-3. Test it in practice tool (get used to it).
-4. Have fun with it.
+0. (Optional) Create a shortcut for the KeyboardWarriorLoL.exe executable in the installed folder
+1. Launch League of Legends alongside KeyboardWarriorLoL.exe
+2. Configure your message titles, messages, hotkeys, and mod configurations (if needed)
+3. Test it in Practice Tool
+4. Have fun with it
 
 *Do not modify any files in the application's folder.*
 
@@ -200,11 +200,11 @@ You should be fine as long as you use it responsibly *(use at your own risk)*.
 
 ## Limitations
 - `Alt` and `CTRL` keys are not supported due to their implementation on the LoL client.
-    - `Alt + Enter` will toggle fullscreen, so it can absolutely not be used with sending a message
+    - `Alt + Enter` will toggle fullscreen, so it can absolutely not be used with sending a message.
     - `CTRL` will block opening the in-game chat with `Enter`
 - `Enter` key is not supported as it risks disrupting the application's process of message sending.
-    - The application sends in-game messages by inputting `Enter`, `Your Message` character by character, and `Enter`
-    - By pressing `Enter` before this, the chat is open then closed before the message is typed, then reopened
+    - The application sends in-game messages by inputting `Enter`, `Your Message` character by character, and `Enter`.
+    - By pressing `Enter` before this, the chat is open then closed before the message is typed, then reopened.
 - No `GameEnd` event on nexus destruction (rip).
     - Unfortunately, the client's API's `GameEnd` event fires after the victory screen, so it is basically useless.
     - Besides that, there are no reliable ways to detect a game ending.
