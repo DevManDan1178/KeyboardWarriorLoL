@@ -384,6 +384,34 @@ For example, `LoLReader` is responsible for communicating with the League client
 
 This separation also makes the event-processing logic independent from the UI that displays the resulting event.
 
+## Building From Source
+### Requirements
+* Windows development environment
+* C++20-compatible compiler
+* CMake 3.10 or newer
+* Ninja
+* Git
+
+The project uses CMake to configure and build the application and requires a C++20-compatible compiler. The repository includes CMake presets configured to use Ninja. 
+
+### Dependencies
+The following dependencies are included in the repository as Git submodules:
+
+* **SDL2** — Windowing, input, and application integration
+* **libuiohook** — Global keyboard and mouse input
+* **Dear ImGui** — User interface and overlay rendering
+
+Additional dependencies included in the repository include:
+* **cpp-httplib** — HTTP communication
+* **nlohmann/json** — JSON configuration
+* **OpenGL** — Rendering backend
+
+#### vcpkg
+The included CMake preset currently expects vcpkg to be installed at:
+```text
+C:/vcpkg
+```
+
 ## Engineering Challenges
 ### Polling a Real-Time Game Client
 The League client does not provide the application with a persistent event subscription for the events it needs.
