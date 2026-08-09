@@ -1,8 +1,6 @@
 # KeyboardWarriorLoL
 
-KeyboardWarriorLoL is a real-time League of Legends companion application for Windows that detects in-game events and makes context-aware chat macros available through configurable global hotkeys.
-
-The application combines a polling-based event processing architecture, real-time game-state integration, configurable input handling, UI overlays, and persistent user configuration into a lightweight desktop application.
+KeyboardWarriorLoL is a lightweight real-time League of Legends companion application for Windows that detects in-game events and makes context-aware chat macros available through configurable hotkeys.
 
 [See example screenshots](#screenshots)   ·   [Troubleshooting](#troubleshooting)
 
