@@ -334,21 +334,6 @@ Next Event
 
 The project is built as a native Windows desktop application using C++20 and CMake.
 
-## Limitations
-
-- `Alt` and `CTRL` keys are not supported due to their implementation on the LoL client.
-    - `Alt + Enter` will toggle fullscreen, so it can absolutely not be used with sending a message
-    - `CTRL` will block opening the in-game chat with `Enter`
-- `Enter` key is not supported as it risks disrupting the application's process of message sending.
-    - The application sends in-game messages by inputting `Enter`, `Your Message` character by character, and `Enter`
-    - By pressing `Enter` before this, the chat is open then closed before the message is typed, then reopened
-- No `GameEnd` event on nexus destruction (rip).
-    - Unfortunately, the client's API's `GameEnd` event fires after the victory screen, so it is basically useless.
-    - Besides that, there are no reliable ways to detect a game ending.
-- Players with the same name cannot be distinguished.
-    - The LoL client API for fetching game events only provides events with the summoner name (without the tagline).
-    - The application might attribute events belonging to another player with the same name to the local player.
-
 ## Architecture
 The source code is separated into several components based on responsibility:
 
@@ -384,6 +369,22 @@ The main responsibilities are separated so that game integration, event processi
 For example, `LoLReader` is responsible for communicating with the League client, while `LoLEventHandler` interprets the returned game events. `LoLChatSender` handles sending messages, while the input and manager components handle configurable hotkeys and messages.
 
 This separation also makes the event-processing logic independent from the UI that displays the resulting event.
+
+
+## Limitations
+
+- `Alt` and `CTRL` keys are not supported due to their implementation on the LoL client.
+    - `Alt + Enter` will toggle fullscreen, so it can absolutely not be used with sending a message
+    - `CTRL` will block opening the in-game chat with `Enter`
+- `Enter` key is not supported as it risks disrupting the application's process of message sending.
+    - The application sends in-game messages by inputting `Enter`, `Your Message` character by character, and `Enter`
+    - By pressing `Enter` before this, the chat is open then closed before the message is typed, then reopened
+- No `GameEnd` event on nexus destruction (rip).
+    - Unfortunately, the client's API's `GameEnd` event fires after the victory screen, so it is basically useless.
+    - Besides that, there are no reliable ways to detect a game ending.
+- Players with the same name cannot be distinguished.
+    - The LoL client API for fetching game events only provides events with the summoner name (without the tagline).
+    - The application might attribute events belonging to another player with the same name to the local player.
 
 ## Engineering Challenges
 ### Polling a Real-Time Game Client
