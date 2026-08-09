@@ -20,7 +20,7 @@ The application combines a polling-based event processing architecture, real-tim
 
 ## Quick start
 1. Click on `Releases`
-2. Download a release (ZIP) and extract it
+2. Download a [release](https://github.com/DevManDan1178/KeyboardWarriorLoL/releases) (ZIP) and extract it
 3. Launch `KeyboardWarriorLoL.exe`
   - If it is blocked by Windows Defender, you will have to allow it to run
 4. Start League of Legends
