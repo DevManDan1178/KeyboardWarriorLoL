@@ -7,7 +7,7 @@ The application combines a polling-based event processing architecture, real-tim
 [See example screenshots](#screenshots)   ·   [Troubleshooting](#troubleshooting)
 
 
-### Supporting two types of messages:
+### Supports two types of messages:
 
 * **Default Messages** — Always available and can be sent at any time.
 * **Event Messages** — Temporarily available after the detection of specific in-game events (different messages configurable per event).
