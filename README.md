@@ -209,6 +209,12 @@ You should be fine as long as you use it responsibly *(use at your own risk)*.
 - Players with the same name cannot be distinguished.
     - The LoL client API for fetching game events only provides events with the summoner name (without the tagline).
     - The application might attribute events belonging to another player with the same name to the local player.
+ 
+<br/>
+
+---
+
+<br/>
 
 # Technical Overview
 ## How It Works
@@ -221,7 +227,6 @@ A dedicated worker thread continuously checks the state of the League client and
 - **In game** - Game events are polled every 100 ms.
 
 Once the application detects that a game is active, it retrieves the current player and team information and begins polling the Live Client Data API for new events.
-
 ```
 League Client
      |
